@@ -1,0 +1,13 @@
+name: HamsterCurrency
+version: ${project.version}
+main: cn.hamster3.currency.HamsterCurrency
+api-version: "1.16"
+authors: [Hamster3]
+description: 仓鼠的多货币支持
+website: https://www.hamster3.cn/
+
+depend:
+  - HamsterAPI
+
+softdepend:
+  - HasmterService

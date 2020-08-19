@@ -1,0 +1,21 @@
+# mysql示例配置文件
+mysql:
+  host: test3.hamster3.cn
+  port: 3306
+  user: Test
+  password: Test123..
+  database: Test
+
+currencyTypes:
+  # 货币ID
+  currency1:
+    # 货币显示名称
+    name: "一周年活动代币"
+    # 是否允许转账
+    canTransfer: false
+  currency2:
+    name: "比特币"
+    canTransfer: true
+
+
+messages:
