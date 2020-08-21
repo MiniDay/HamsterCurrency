@@ -15,7 +15,7 @@ public abstract class CurrencyAPI {
         CurrencyAPI.dataManager = dataManager;
     }
 
-    public double getPlayerCurrency(UUID uuid, String currencyID) {
+    public static double getPlayerCurrency(UUID uuid, String currencyID) {
         PlayerData data = dataManager.getPlayerData(uuid);
         if (data == null) {
             return 0;
@@ -23,7 +23,7 @@ public abstract class CurrencyAPI {
         return data.getPlayerCurrency(currencyID);
     }
 
-    public void setPlayerCurrency(UUID uuid, String currencyID, double amount) {
+    public static void setPlayerCurrency(UUID uuid, String currencyID, double amount) {
         PlayerData data = dataManager.getPlayerData(uuid);
         if (data == null) {
             return;
@@ -32,7 +32,7 @@ public abstract class CurrencyAPI {
         dataManager.savePlayerData(data);
     }
 
-    public void addPlayerCurrency(UUID uuid, String currencyID, double amount) {
+    public static void addPlayerCurrency(UUID uuid, String currencyID, double amount) {
         PlayerData data = dataManager.getPlayerData(uuid);
         if (data == null) {
             return;
@@ -41,7 +41,7 @@ public abstract class CurrencyAPI {
         dataManager.savePlayerData(data);
     }
 
-    public void takePlayerCurrency(UUID uuid, String currencyID, double amount) {
+    public static void takePlayerCurrency(UUID uuid, String currencyID, double amount) {
         PlayerData data = dataManager.getPlayerData(uuid);
         if (data == null) {
             return;
