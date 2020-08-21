@@ -11,3 +11,19 @@ depend:
 
 softdepend:
   - HasmterService
+
+commands:
+  HamsterCurrency:
+    aliases: [hCurrency, currency]
+
+permissions:
+  currency.add:
+    default: op
+  currency.take:
+    default: op
+  currency.set:
+    default: op
+  currency.look:
+    default: true
+  currency.look.other:
+    default: op

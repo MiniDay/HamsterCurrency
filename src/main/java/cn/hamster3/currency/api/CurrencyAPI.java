@@ -2,24 +2,48 @@ package cn.hamster3.currency.api;
 
 import cn.hamster3.currency.core.IDataManager;
 import cn.hamster3.currency.data.CurrencyType;
+import cn.hamster3.currency.data.PlayerData;
 
 import java.util.HashSet;
 import java.util.UUID;
 
+@SuppressWarnings("unused")
 public class CurrencyAPI {
     private IDataManager dataManager;
 
     public double getPlayerCurrency(UUID uuid, String currencyID) {
-        return 0.0D;
+        PlayerData data = dataManager.getPlayerData(uuid);
+        if (data == null) {
+            return 0;
+        }
+        return data.getPlayerCurrency(currencyID);
     }
 
-    public void setPlayerCurrency(UUID uuid, String currencyID) {
+    public void setPlayerCurrency(UUID uuid, String currencyID, double amount) {
+        PlayerData data = dataManager.getPlayerData(uuid);
+        if (data == null) {
+            return;
+        }
+        data.setPlayerCurrency(currencyID, amount);
+        dataManager.savePlayerData(data);
     }
 
-    public void addPlayerCurrency(UUID uuid, String currencyID) {
+    public void addPlayerCurrency(UUID uuid, String currencyID, double amount) {
+        PlayerData data = dataManager.getPlayerData(uuid);
+        if (data == null) {
+            return;
+        }
+        data.setPlayerCurrency(currencyID, data.getPlayerCurrency(currencyID) + amount);
+        dataManager.savePlayerData(data);
     }
 
-    public void takePlayerCurrency(UUID uuid, String currencyID) {
+    public void takePlayerCurrency(UUID uuid, String currencyID, double amount) {
+        PlayerData data = dataManager.getPlayerData(uuid);
+        if (data == null) {
+            return;
+        }
+        data.setPlayerCurrency(currencyID, data.getPlayerCurrency(currencyID) - amount);
+        dataManager.savePlayerData(data);
     }
 
     public HashSet<CurrencyType> getAllCurrencyType() {

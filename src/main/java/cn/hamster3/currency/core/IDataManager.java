@@ -41,6 +41,8 @@ public interface IDataManager {
 
     PlayerData getPlayerData(UUID uuid);
 
+    PlayerData getPlayerData(String name);
+
     CurrencyType getCurrencyType(String id);
 
     Set<CurrencyType> getCurrencyTypes();

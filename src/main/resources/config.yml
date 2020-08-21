@@ -1,10 +1,23 @@
-# mysql示例配置文件
-mysql:
-  host: test3.hamster3.cn
-  port: 3306
+# 是否开启跨服模式
+# 若false则使用本地文件存储模式
+# 若true则需要HamsterService前置
+useBC: true
+
+# 若开启跨服模式，则需要配置datasource
+datasource:
+  driver: "com.mysql.jdbc.Driver"
+  url: "jdbc:mysql://test3.hamster3.cn:3306?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8&autoReconnect=true&useSSL=false"
   user: Test
   password: Test123..
   database: Test
+  # 是否将这个服务器的配置文件设为模板
+  # 若设为true，config将会在服务器启动时自动上传至数据库
+  # 其他template为false的服务器将会在启动和重载时自动从数据库上下载config
+  # 可以节省一些config配置时的麻烦事情
+  # 但是请先保证template为true的服务器完全启动了再启动子服
+  # 如果觉得这样反而更麻烦，也可以直接把所有服务器的template设为true
+  # 这样每个服务器都会使用自己本地的config文件了
+  template: true
 
 currencyTypes:
   # 货币ID
