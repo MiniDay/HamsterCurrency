@@ -8,8 +8,12 @@ import java.util.HashSet;
 import java.util.UUID;
 
 @SuppressWarnings("unused")
-public class CurrencyAPI {
-    private IDataManager dataManager;
+public abstract class CurrencyAPI {
+    private static IDataManager dataManager;
+
+    public static void setDataManager(IDataManager dataManager) {
+        CurrencyAPI.dataManager = dataManager;
+    }
 
     public double getPlayerCurrency(UUID uuid, String currencyID) {
         PlayerData data = dataManager.getPlayerData(uuid);

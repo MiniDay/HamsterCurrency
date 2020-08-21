@@ -1,6 +1,7 @@
 package cn.hamster3.currency.hook;
 
 import cn.hamster3.currency.core.IDataManager;
+import cn.hamster3.currency.data.PlayerData;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -34,6 +35,7 @@ public class PlaceholderHook extends PlaceholderExpansion {
 
     @Override
     public String onPlaceholderRequest(Player player, String params) {
-        return onRequest(player, params);
+        PlayerData data = dataManager.getPlayerData(player.getUniqueId());
+        return String.format("%.2f", data.getPlayerCurrency(params));
     }
 }

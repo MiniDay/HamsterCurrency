@@ -21,13 +21,10 @@ datasource:
 
 currencyTypes:
   # 货币ID
-  currency1:
-    # 货币显示名称
-    name: "一周年活动代币"
+  "一周年活动代币":
     # 是否允许转账
     canTransfer: false
-  currency2:
-    name: "比特币"
+  "比特币":
     canTransfer: true
 
 

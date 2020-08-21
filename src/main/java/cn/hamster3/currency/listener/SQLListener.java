@@ -7,7 +7,6 @@ import cn.hamster3.service.spigot.HamsterService;
 import cn.hamster3.service.spigot.event.ServiceReceiveEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
 import java.util.UUID;
@@ -15,7 +14,7 @@ import java.util.UUID;
 /**
  * 跨服模式时使用这个监听器
  */
-public class SQLListener implements Listener {
+public class SQLListener extends CurrencyListener {
     private final HamsterCurrency plugin;
     private final SQLDataManager dataManager;
 

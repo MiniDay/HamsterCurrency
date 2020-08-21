@@ -11,26 +11,17 @@ public class CurrencyType {
      */
     private final String id;
     /**
-     * 货币名称
-     */
-    private final String name;
-    /**
      * 是否允许转账
      */
     private final boolean canTransfer;
 
     public CurrencyType(ConfigurationSection config) {
         id = config.getName();
-        name = config.getString("name");
         canTransfer = config.getBoolean("canTransfer");
     }
 
     public String getId() {
         return id;
-    }
-
-    public String getName() {
-        return name;
     }
 
     public boolean isCanTransfer() {
