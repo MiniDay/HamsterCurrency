@@ -60,16 +60,12 @@
             <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
         </repository>
         <repository>
-            <id>sonatype</id>
-            <url>https://oss.sonatype.org/content/groups/public/</url>
-        </repository>
-        <repository>
             <id>jitpack.io</id>
             <url>https://jitpack.io</url>
         </repository>
         <repository>
             <id>placeholderapi</id>
-            <url>http://repo.extendedclip.com/content/repositories/placeholderapi/</url>
+            <url>https://repo.extendedclip.com/content/repositories/public/</url>
         </repository>
     </repositories>
 
@@ -89,7 +85,7 @@
         <dependency>
             <groupId>cn.hamster3</groupId>
             <artifactId>HamsterService</artifactId>
-            <version>1.4.7-SNAPSHOT</version>
+            <version>1.4.10-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>

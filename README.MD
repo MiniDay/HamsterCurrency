@@ -1,4 +1,5 @@
 # HamsterCurrency
+![](https://jitpack.io/v/cn.hamster3/HamsterCurrency.svg)  
 仓鼠的多货币插件  
 目前只支持BC跨服模式  
 **现已支持Vault经济系统！**
@@ -9,7 +10,6 @@
 
 
 # 开发者
-
 ## 依赖导入
 
 ### Maven
