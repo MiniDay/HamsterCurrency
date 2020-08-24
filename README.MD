@@ -7,6 +7,22 @@
 - [HamsterAPI](https://github.com/MiniDay/HamsterAPI/releases)
 - （仅跨服模式需要）[HamsterService](https://github.com/MiniDay/HamsterService/releases)
 
-# API
+
+# 开发者
+
+## 依赖导入
+
+### Maven
+```xml
+	<repositories>
+		<repository>
+		    <id>jitpack.io</id>
+		    <url>https://jitpack.io</url>
+		</repository>
+	</repositories>
+```
+
+
+## API
 请参考[CurrencyAPI](src/main/java/cn/hamster3/currency/api/CurrencyAPI.java)
 
