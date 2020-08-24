@@ -7,6 +7,7 @@ import cn.hamster3.currency.data.PlayerData;
 import cn.hamster3.service.spigot.HamsterService;
 import com.google.gson.JsonParser;
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -50,6 +51,7 @@ public class SQLDataManager implements IDataManager {
 
     @Override
     public void onEnable() {
+        HamsterCurrency.getLogUtils().info("从数据库中读取玩家数据...");
         try {
             Statement statement = connection.createStatement();
             ResultSet set = statement.executeQuery("SELECT * FROM hamster_currency_player_data;");
@@ -61,8 +63,11 @@ public class SQLDataManager implements IDataManager {
             set.close();
             statement.close();
         } catch (SQLException e) {
+            HamsterCurrency.getLogUtils().warning("从数据库中读取玩家数据时出现了一个异常:");
             e.printStackTrace();
         }
+        HamsterCurrency.getLogUtils().info("从数据库中读取玩家数据完成!");
+
         if (FileManager.isMainServer()) {
             uploadConfigToSQL();
         } else {
@@ -83,28 +88,33 @@ public class SQLDataManager implements IDataManager {
     }
 
     public void uploadConfigToSQL() {
+        HamsterCurrency.getLogUtils().info("重载配置文件...");
         FileManager.reload(plugin);
         FileConfiguration config = FileManager.getPluginConfig();
+        HamsterCurrency.getLogUtils().info("配置文件重载完成!");
         try {
+            HamsterCurrency.getLogUtils().info("将配置文件上传至数据库...");
             Statement statement = connection.createStatement();
             String data = Base64.getEncoder().encodeToString(config.saveToString().getBytes(StandardCharsets.UTF_8));
             statement.executeUpdate(String.format(
-                    "REPLACE INTO hamster_currency_settings('%s', '%s');",
+                    "REPLACE INTO hamster_currency_settings VALUES('%s', '%s');",
                     "pluginConfig",
                     data
             ));
             statement.close();
+            HamsterCurrency.getLogUtils().info("配置文件上传完成!");
         } catch (SQLException e) {
             HamsterCurrency.getLogUtils().info("插件上传 pluginConfig 至数据库时遇到了一个异常: ");
             e.printStackTrace();
         }
-        FileManager.setPluginConfig(config);
+        loadConfig(config);
         HamsterService.sendMessage("HamsterCurrency", "uploadConfigToSQL %s", HamsterService.getServerName());
     }
 
     @SuppressWarnings("SwitchStatementWithTooFewBranches")
     public void loadConfigFromSQL() {
         try {
+            HamsterCurrency.getLogUtils().info("从数据库中下载配置文件...");
             Statement statement = connection.createStatement();
             ResultSet set = statement.executeQuery("SELECT * FROM hamster_currency_settings;");
             while (set.next()) {
@@ -119,14 +129,34 @@ public class SQLDataManager implements IDataManager {
                             HamsterCurrency.getLogUtils().info("插件加载 %s 时遇到了一个异常: ", title);
                             e.printStackTrace();
                         }
-                        FileManager.setPluginConfig(config);
+                        loadConfig(config);
                     }
                 }
             }
             statement.close();
+            HamsterCurrency.getLogUtils().info("配置文件下载完成!");
         } catch (SQLException e) {
+            HamsterCurrency.getLogUtils().info("插件从数据库中下载 pluginConfig 时遇到了一个异常: ");
             e.printStackTrace();
         }
+    }
+
+    @SuppressWarnings("ConstantConditions")
+    private void loadConfig(FileConfiguration config) {
+        HamsterCurrency.getLogUtils().info("加载配置文件...");
+        currencyTypes.clear();
+        ConfigurationSection currencyTypesConfig = config.getConfigurationSection("currencyTypes");
+        for (String key : currencyTypesConfig.getKeys(false)) {
+            try {
+                currencyTypes.add(new CurrencyType(currencyTypesConfig.getConfigurationSection(key)));
+                HamsterCurrency.getLogUtils().warning("已加载货币类型: %s", key);
+            } catch (Exception e) {
+                HamsterCurrency.getLogUtils().warning("加载货币类型 %s 时出现了一个错误: ", key);
+                e.printStackTrace();
+            }
+        }
+        FileManager.setPluginConfig(config);
+        HamsterCurrency.getLogUtils().info("配置文件加载完成!");
     }
 
     @Override
@@ -134,7 +164,7 @@ public class SQLDataManager implements IDataManager {
         try {
             Statement statement = connection.createStatement();
             ResultSet set = statement.executeQuery(String.format(
-                    "SELECT * FROM glazed_time_player_data WHERE uuid='%s';",
+                    "SELECT * FROM hamster_currency_player_data WHERE uuid='%s';",
                     uuid
             ));
             PlayerData data;
@@ -162,7 +192,7 @@ public class SQLDataManager implements IDataManager {
                     try {
                         Statement statement = connection.createStatement();
                         statement.executeUpdate(String.format(
-                                "REPLACE INTO glazed_time_player_data VALUES('%s', '%s');",
+                                "REPLACE INTO hamster_currency_player_data VALUES('%s', '%s');",
                                 data.getUuid().toString(),
                                 data.saveToJson().toString()
                         ));
@@ -197,6 +227,11 @@ public class SQLDataManager implements IDataManager {
             }
         }
         return null;
+    }
+
+    @Override
+    public Set<PlayerData> getPlayerData() {
+        return playerData;
     }
 
     @Override

@@ -11,8 +11,10 @@ public class CurrencyCommand extends CommandManager {
                 new AddCommand(dataManager),
                 new PayCommand(dataManager),
                 new ReloadCommand(dataManager),
+                new SeeCommand(dataManager),
                 new SetCommand(dataManager),
-                new TakeCommand(dataManager)
+                new TakeCommand(dataManager),
+                new TopCommand(dataManager)
         );
         command.setExecutor(this);
         command.setTabCompleter(this);

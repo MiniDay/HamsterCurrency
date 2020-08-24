@@ -29,6 +29,7 @@ public final class HamsterCurrency extends JavaPlugin {
     public void onLoad() {
         FileManager.reload(this);
         logUtils = new LogUtils(this);
+        logUtils.infoDividingLine();
         if (FileManager.isUseBC()) {
             logUtils.info("使用BC模式...");
             try {
@@ -44,34 +45,49 @@ public final class HamsterCurrency extends JavaPlugin {
             }
         }
         CurrencyAPI.setDataManager(dataManager);
+        logUtils.info("API初始化完成!");
         loaded = true;
+        logUtils.infoDividingLine();
     }
 
     @Override
     public void onEnable() {
+        logUtils.infoDividingLine();
         if (!loaded) {
             logUtils.warning("插件未能成功启动!");
             setEnabled(false);
             return;
         }
+
+        dataManager.onEnable();
+
         PluginCommand command = getCommand("HamsterCurrency");
         new CurrencyCommand(command, dataManager);
         logUtils.info("插件命令已注册!");
+
         Bukkit.getPluginManager().registerEvents(listener, this);
         logUtils.info("事件监听器已注册!");
+
         if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
             logUtils.info("检测到 PlaceholderAPI 已启动...");
             new PlaceholderHook(dataManager).register();
             logUtils.info("已挂载 PlaceholderAPI 变量!");
+        } else {
+            logUtils.info("未检测到 PlaceholderAPI!");
         }
+
         logUtils.info("插件已启动!");
+        logUtils.infoDividingLine();
     }
 
     @Override
     public void onDisable() {
+        logUtils.infoDividingLine();
         if (dataManager != null) {
             dataManager.onDisable();
         }
         logUtils.info("插件已关闭!");
+        logUtils.infoDividingLine();
+        logUtils.close();
     }
 }

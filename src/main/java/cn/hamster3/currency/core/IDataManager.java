@@ -43,6 +43,8 @@ public interface IDataManager {
 
     PlayerData getPlayerData(String name);
 
+    Set<PlayerData> getPlayerData();
+
     CurrencyType getCurrencyType(String id);
 
     Set<CurrencyType> getCurrencyTypes();

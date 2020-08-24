@@ -15,7 +15,7 @@ public abstract class FileManager {
         plugin.reloadConfig();
         pluginConfig = plugin.getConfig();
         useBC = pluginConfig.getBoolean("useBC", false);
-        mainServer = pluginConfig.getBoolean("mysql.template");
+        mainServer = pluginConfig.getBoolean("datasource.template");
     }
 
     public static FileConfiguration getPluginConfig() {

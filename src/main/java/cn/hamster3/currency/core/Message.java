@@ -13,7 +13,11 @@ public enum Message {
     currencyTypeCantTransfer("%type% 不支持转账!"),
     currencyNotEnough("你的 %type% 不足!"),
     paySuccess("已将 %amount% %type% 转账至 %player% 账户!"),
-    receivePay("从 %player% 账户上收到 %amount% %type%.");
+    receivePay("从 %player% 账户上收到 %amount% %type%."),
+    seeCurrency("玩家 %player% 当前货币 %type% 余额为: %amount%"),
+    pageError("页码必须是一个大于0的整数!"),
+    topRankPageHead("========== %type% 排行榜 第 %page% 页 =========="),
+    topRankPageItem("%rank%.%name% %amount%");
     private String message;
 
     Message(String message) {
