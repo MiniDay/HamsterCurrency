@@ -29,7 +29,7 @@
 	<dependency>
 	    <groupId>cn.hamster3</groupId>
 	    <artifactId>HamsterCurrency</artifactId>
-	    <version>-SNAPSHOT</version>
+	    <version>1.1.0-SNAPSHOT</version>
 	</dependency>
 ```
 
@@ -46,7 +46,7 @@
 添加导入:  
 ```groovy
 	dependencies {
-	        implementation 'cn.hamster3:HamsterCurrency:-SNAPSHOT'
+	        implementation 'cn.hamster3:HamsterCurrency:1.1.0-SNAPSHOT'
 	}
 ```
 
