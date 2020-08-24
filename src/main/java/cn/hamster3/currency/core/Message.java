@@ -17,7 +17,9 @@ public enum Message {
     seeCurrency("玩家 %player% 当前货币 %type% 余额为: %amount%"),
     pageError("页码必须是一个大于0的整数!"),
     topRankPageHead("========== %type% 排行榜 第 %page% 页 =========="),
-    topRankPageItem("%rank%.%name% %amount%");
+    topRankPageItem("%rank%.%name% %amount%"),
+    currencyNamePlural("金币"),
+    currencyNameSingular("金币");
     private String message;
 
     Message(String message) {

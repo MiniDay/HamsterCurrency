@@ -8,6 +8,8 @@ import org.bukkit.configuration.file.FileConfiguration;
 public abstract class FileManager {
     private static boolean useBC;
     private static boolean mainServer;
+    private static boolean vaultHook;
+    private static String vaultCurrencyType;
     private static FileConfiguration pluginConfig;
 
     public static void reload(HamsterCurrency plugin) {
@@ -25,6 +27,10 @@ public abstract class FileManager {
     @SuppressWarnings("ConstantConditions")
     public static void setPluginConfig(FileConfiguration pluginConfig) {
         FileManager.pluginConfig = pluginConfig;
+
+        vaultHook = pluginConfig.getBoolean("vault.hook");
+        vaultCurrencyType = pluginConfig.getString("vault.type");
+
         ConfigurationSection messagesConfig = pluginConfig.getConfigurationSection("messages");
         for (String key : messagesConfig.getKeys(false)) {
             try {
@@ -42,5 +48,13 @@ public abstract class FileManager {
 
     public static boolean isMainServer() {
         return mainServer;
+    }
+
+    public static boolean isVaultHook() {
+        return vaultHook;
+    }
+
+    public static String getVaultCurrencyType() {
+        return vaultCurrencyType;
     }
 }

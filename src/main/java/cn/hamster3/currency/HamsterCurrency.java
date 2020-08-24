@@ -6,11 +6,16 @@ import cn.hamster3.currency.command.CurrencyCommand;
 import cn.hamster3.currency.core.FileManager;
 import cn.hamster3.currency.core.IDataManager;
 import cn.hamster3.currency.core.SQLDataManager;
+import cn.hamster3.currency.data.CurrencyType;
 import cn.hamster3.currency.hook.PlaceholderHook;
+import cn.hamster3.currency.hook.VaultEconomyHook;
 import cn.hamster3.currency.listener.CurrencyListener;
 import cn.hamster3.currency.listener.SQLListener;
+import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.command.PluginCommand;
+import org.bukkit.entity.Player;
+import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.sql.SQLException;
@@ -76,7 +81,42 @@ public final class HamsterCurrency extends JavaPlugin {
             logUtils.info("未检测到 PlaceholderAPI!");
         }
 
+        registerVault();
+
         logUtils.info("插件已启动!");
+        logUtils.infoDividingLine();
+
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            dataManager.loadPlayerData(player.getUniqueId());
+        }
+    }
+
+    private void registerVault() {
+        if (!FileManager.isVaultHook()) {
+            return;
+        }
+        logUtils.infoDividingLine();
+
+        if (!Bukkit.getPluginManager().isPluginEnabled("Vault")) {
+            logUtils.warning("未找到 Vault 插件!  取消注册Vault经济系统...");
+            return;
+        }
+
+        String type = FileManager.getVaultCurrencyType();
+        logUtils.info("尝试以 %s 注册Vault经济系统...", type);
+
+        CurrencyType currencyType = dataManager.getCurrencyType(type);
+        if (currencyType == null) {
+            logUtils.warning("未找到经济类型 %s! 取消注册Vault经济系统...", type);
+            return;
+        }
+
+        VaultEconomyHook hook = new VaultEconomyHook(dataManager);
+        logUtils.info("已初始化Vault连接器...");
+
+        Bukkit.getServicesManager().register(Economy.class, hook, this, ServicePriority.Normal);
+        logUtils.info("Vault经济系统注册成功!");
+
         logUtils.infoDividingLine();
     }
 
@@ -86,6 +126,7 @@ public final class HamsterCurrency extends JavaPlugin {
         if (dataManager != null) {
             dataManager.onDisable();
         }
+        Bukkit.getServicesManager().unregister(this);
         logUtils.info("插件已关闭!");
         logUtils.infoDividingLine();
         logUtils.close();

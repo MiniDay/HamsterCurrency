@@ -12,6 +12,7 @@ depend:
 softdepend:
   - HasmterService
   - PlaceholderAPI
+  - Vault
 
 commands:
   HamsterCurrency:

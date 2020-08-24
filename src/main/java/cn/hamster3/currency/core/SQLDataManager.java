@@ -143,6 +143,8 @@ public class SQLDataManager implements IDataManager {
 
     @SuppressWarnings("ConstantConditions")
     private void loadConfig(FileConfiguration config) {
+        HamsterCurrency.getLogUtils().infoDividingLine();
+
         HamsterCurrency.getLogUtils().info("加载配置文件...");
         currencyTypes.clear();
         ConfigurationSection currencyTypesConfig = config.getConfigurationSection("currencyTypes");
@@ -157,6 +159,8 @@ public class SQLDataManager implements IDataManager {
         }
         FileManager.setPluginConfig(config);
         HamsterCurrency.getLogUtils().info("配置文件加载完成!");
+
+        HamsterCurrency.getLogUtils().infoDividingLine();
     }
 
     @Override
@@ -173,12 +177,14 @@ public class SQLDataManager implements IDataManager {
                 data = new PlayerData(parser.parse(string).getAsJsonObject());
             } else {
                 data = new PlayerData(uuid);
+                HamsterCurrency.getLogUtils().info("初始化玩家 %s 的存档数据.", data.getUuid());
             }
             synchronized (SQLDataManager.class) {
                 playerData.remove(data);
                 playerData.add(data);
             }
             statement.close();
+            HamsterCurrency.getLogUtils().info("已加载玩家 %s 的存档数据.", data.getUuid());
         } catch (SQLException e) {
             HamsterCurrency.getLogUtils().warning("加载玩家 %s 的存档数据时出错!", uuid);
             e.printStackTrace();
@@ -201,7 +207,9 @@ public class SQLDataManager implements IDataManager {
                         HamsterCurrency.getLogUtils().warning("保存玩家 %s 的存档数据时出错!", data.getUuid());
                         e.printStackTrace();
                     }
-                    HamsterService.sendMessage("HamsterCurrency", "savedPlayerData %s", data.getUuid());
+                    HamsterCurrency.getLogUtils().info("已保存玩家 %s 的存档数据.", data.getUuid());
+                    HamsterService.sendMessage("HamsterCurrency",
+                            "savedPlayerData %s %s", data.getUuid(), HamsterService.getServerName());
                 });
     }
 

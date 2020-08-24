@@ -39,6 +39,7 @@ public class SQLListener extends CurrencyListener {
                 if (!FileManager.isMainServer()) {
                     return;
                 }
+                HamsterCurrency.getLogUtils().info("收到重载指令，开始重载服务器...");
                 dataManager.uploadConfigToSQL();
                 break;
             }
@@ -46,10 +47,14 @@ public class SQLListener extends CurrencyListener {
                 if (HamsterService.getServerName().equals(args[1])) {
                     return;
                 }
+                HamsterCurrency.getLogUtils().info("主服务器已上传 pluginConfig, 准备从数据库中下载配置并重载插件...");
                 dataManager.loadConfigFromSQL();
                 break;
             }
             case "savedPlayerData": {
+                if (HamsterService.getServerName().equals(args[2])) {
+                    return;
+                }
                 UUID uuid = UUID.fromString(args[1]);
                 dataManager.loadPlayerData(uuid);
                 break;

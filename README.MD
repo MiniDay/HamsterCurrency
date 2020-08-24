@@ -1,6 +1,7 @@
 # HamsterCurrency
 仓鼠的多货币插件  
-目前只支持BC跨服模式
+目前只支持BC跨服模式  
+**现已支持Vault经济系统！**
 
 # 依赖前置
 - [HamsterAPI](https://github.com/MiniDay/HamsterAPI/releases)
