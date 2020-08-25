@@ -17,8 +17,16 @@ softdepend:
 commands:
   HamsterCurrency:
     aliases: [hCurrency, currency]
+  balance:
+    aliases: [bal, seeMoney, money]
+  balanceTop:
+    aliases: [baltop]
+  payMoney:
+    aliases: [pay]
 
 permissions:
+  currency.import:
+    default: op
   currency.add:
     default: op
   currency.take:

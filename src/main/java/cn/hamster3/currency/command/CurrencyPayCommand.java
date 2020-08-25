@@ -14,10 +14,10 @@ import org.bukkit.entity.Player;
 
 import java.util.List;
 
-public class PayCommand extends CommandExecutor {
+public class CurrencyPayCommand extends CommandExecutor {
     private final IDataManager dataManager;
 
-    public PayCommand(IDataManager dataManager) {
+    public CurrencyPayCommand(IDataManager dataManager) {
         super(
                 "pay",
                 "向其他玩家转账",
@@ -44,8 +44,8 @@ public class PayCommand extends CommandExecutor {
             sender.sendMessage(Message.notInputPlayerName.toString());
             return true;
         }
-        PlayerData toPlayerData = dataManager.getPlayerData(args[1]);
-        if (toPlayerData == null) {
+        PlayerData toData = dataManager.getPlayerData(args[1]);
+        if (toData == null) {
             sender.sendMessage(Message.playerNotFound.toString());
             return true;
         }
@@ -63,7 +63,7 @@ public class PayCommand extends CommandExecutor {
             return true;
         }
         if (args.length < 4) {
-            sender.sendMessage(Message.notInputAmount.toString());
+            sender.sendMessage(Message.notInputPayAmount.toString());
             return true;
         }
         double amount;
@@ -73,47 +73,51 @@ public class PayCommand extends CommandExecutor {
             sender.sendMessage(Message.amountNumberError.toString());
             return true;
         }
+        if (amount <= 0) {
+            sender.sendMessage(Message.amountNumberError.toString());
+            return true;
+        }
         Player player = (Player) sender;
-        PlayerData playerData = dataManager.getPlayerData(player.getUniqueId());
-        if (playerData.getPlayerCurrency(type.getId()) < amount) {
+        PlayerData fromData = dataManager.getPlayerData(player.getUniqueId());
+        if (fromData.getPlayerCurrency(type.getId()) < amount) {
             sender.sendMessage(
                     Message.currencyNotEnough.toString()
                             .replace("%type%", type.getId())
             );
             return true;
         }
-        playerData.setPlayerCurrency(type.getId(), playerData.getPlayerCurrency(type.getId()) - amount);
-        toPlayerData.setPlayerCurrency(type.getId(), toPlayerData.getPlayerCurrency(type.getId()) + amount);
-        dataManager.savePlayerData(playerData);
-        dataManager.savePlayerData(toPlayerData);
+        fromData.setPlayerCurrency(type.getId(), fromData.getPlayerCurrency(type.getId()) - amount);
+        toData.setPlayerCurrency(type.getId(), toData.getPlayerCurrency(type.getId()) + amount);
+        dataManager.savePlayerData(fromData);
+        dataManager.savePlayerData(toData);
         sender.sendMessage(
                 Message.paySuccess.toString()
-                        .replace("%player%", toPlayerData.getPlayerName())
+                        .replace("%player%", toData.getPlayerName())
                         .replace("%type%", type.getId())
-                        .replace("%amount%", String.format("%.2f", toPlayerData.getPlayerCurrency(type.getId())))
+                        .replace("%amount%", String.format("%.2f", toData.getPlayerCurrency(type.getId())))
         );
         sender.sendMessage(
                 Message.paySuccess.toString()
-                        .replace("%player%", toPlayerData.getPlayerName())
+                        .replace("%player%", toData.getPlayerName())
                         .replace("%type%", type.getId())
-                        .replace("%amount%", String.format("%.2f", toPlayerData.getPlayerCurrency(type.getId())))
+                        .replace("%amount%", String.format("%.2f", toData.getPlayerCurrency(type.getId())))
         );
         if (FileManager.isUseBC()) {
             HamsterService.sendPlayerMessage(
-                    toPlayerData.getUuid(),
+                    toData.getUuid(),
                     Message.receivePay.toString()
                             .replace("%player%", player.getName())
                             .replace("%type%", type.getId())
-                            .replace("%amount%", String.format("%.2f", toPlayerData.getPlayerCurrency(type.getId())))
+                            .replace("%amount%", String.format("%.2f", toData.getPlayerCurrency(type.getId())))
             );
         } else {
-            Player toPlayer = Bukkit.getPlayer(toPlayerData.getUuid());
+            Player toPlayer = Bukkit.getPlayer(toData.getUuid());
             if (toPlayer != null) {
                 toPlayer.sendMessage(
                         Message.receivePay.toString()
                                 .replace("%player%", player.getName())
                                 .replace("%type%", type.getId())
-                                .replace("%amount%", String.format("%.2f", toPlayerData.getPlayerCurrency(type.getId())))
+                                .replace("%amount%", String.format("%.2f", toData.getPlayerCurrency(type.getId())))
                 );
             }
         }

@@ -5,8 +5,8 @@ import cn.hamster3.currency.core.Message;
 import cn.hamster3.currency.data.CurrencyType;
 import cn.hamster3.currency.data.PlayerData;
 
-public class SetCommand extends AdminSetCommand {
-    public SetCommand(IDataManager dataManager) {
+public class CurrencySetCommand extends AdminSetCommand {
+    public CurrencySetCommand(IDataManager dataManager) {
         super(
                 dataManager,
                 "set",

@@ -8,6 +8,7 @@ public enum Message {
     notInputCurrencyType("请输入货币类型!"),
     currencyTypeNotFound("未找到该货币类型!"),
     notInputAmount("请输入货币额度!"),
+    notInputPayAmount("请输入转账金额!"),
     amountNumberError("货币额度必须是一个数字!"),
     playerCurrencySetSuccess("货币设置成功! 玩家 %player% 当前 %type% 余额为: %amount%"),
     currencyTypeCantTransfer("%type% 不支持转账!"),
@@ -19,7 +20,8 @@ public enum Message {
     topRankPageHead("========== %type% 排行榜 第 %page% 页 =========="),
     topRankPageItem("%rank%.%name% %amount%"),
     currencyNamePlural("金币"),
-    currencyNameSingular("金币");
+    currencyNameSingular("金币"),
+    vaultEconomySetError("服务器经济系统发生了一个错误, 请尝试联系服务器管理员汇报问题!");
     private String message;
 
     Message(String message) {

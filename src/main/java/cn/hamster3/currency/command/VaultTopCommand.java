@@ -1,33 +1,25 @@
 package cn.hamster3.currency.command;
 
-import cn.hamster3.api.HamsterAPI;
-import cn.hamster3.api.command.CommandExecutor;
+import cn.hamster3.api.command.CommandManager;
+import cn.hamster3.currency.core.FileManager;
 import cn.hamster3.currency.core.IDataManager;
 import cn.hamster3.currency.core.Message;
 import cn.hamster3.currency.data.CurrencyType;
 import cn.hamster3.currency.data.PlayerData;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.PluginCommand;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 
-public class TopCommand extends CommandExecutor {
+public class VaultTopCommand extends CommandManager {
     private final IDataManager dataManager;
 
-    public TopCommand(IDataManager dataManager) {
-        super(
-                "top",
-                "查看玩家的货币余额排行榜",
-                "currency.top",
-                Message.notHasPermission.toString(),
-                new String[]{
-                        "货币类型",
-                        "页码"
-                }
-        );
+    public VaultTopCommand(PluginCommand command, IDataManager dataManager) {
+        super(command);
         this.dataManager = dataManager;
+        command.setExecutor(this);
+        command.setTabCompleter(this);
     }
 
     @Override
@@ -37,20 +29,20 @@ public class TopCommand extends CommandExecutor {
 
     @Override
     @SuppressWarnings("DuplicatedCode")
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (args.length < 2) {
-            sender.sendMessage(Message.notInputCurrencyType.toString());
+    protected boolean defaultCommand(CommandSender sender, Command command, String label, String[] args) {
+        if (!FileManager.isVaultHook()) {
+            sender.sendMessage(Message.vaultEconomySetError.toString());
             return true;
         }
-        CurrencyType type = dataManager.getCurrencyType(args[1]);
+        CurrencyType type = dataManager.getCurrencyType(FileManager.getVaultCurrencyType());
         if (type == null) {
-            sender.sendMessage(Message.currencyTypeNotFound.toString());
+            sender.sendMessage(Message.vaultEconomySetError.toString());
             return true;
         }
         int page = 1;
-        if (args.length >= 3) {
+        if (args.length >= 1) {
             try {
-                page = Integer.parseInt(args[2]);
+                page = Integer.parseInt(args[0]);
             } catch (NumberFormatException e) {
                 sender.sendMessage(Message.pageError.toString());
                 return true;
@@ -81,14 +73,5 @@ public class TopCommand extends CommandExecutor {
             );
         }
         return true;
-    }
-
-    @Override
-    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
-        if (args.length == 2) {
-            List<String> types = dataManager.getCurrencyTypes().stream().map(CurrencyType::getId).collect(Collectors.toList());
-            return HamsterAPI.startWith(types, args[1]);
-        }
-        return null;
     }
 }

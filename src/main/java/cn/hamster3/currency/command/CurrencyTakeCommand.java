@@ -5,20 +5,20 @@ import cn.hamster3.currency.core.Message;
 import cn.hamster3.currency.data.CurrencyType;
 import cn.hamster3.currency.data.PlayerData;
 
-public class AddCommand extends AdminSetCommand {
-    public AddCommand(IDataManager dataManager) {
+public class CurrencyTakeCommand extends AdminSetCommand {
+    public CurrencyTakeCommand(IDataManager dataManager) {
         super(
                 dataManager,
-                "add",
-                "为玩家货币添加余额",
-                "currency.add",
+                "take",
+                "为玩家货币扣除余额",
+                "currency.take",
                 Message.notHasPermission.toString()
         );
     }
 
     @Override
     protected void doSet(PlayerData data, CurrencyType type, double amount) {
-        data.setPlayerCurrency(type.getId(), data.getPlayerCurrency(type.getId()) + amount);
+        data.setPlayerCurrency(type.getId(), data.getPlayerCurrency(type.getId()) - amount);
     }
 
 }

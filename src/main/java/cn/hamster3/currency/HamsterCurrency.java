@@ -3,6 +3,9 @@ package cn.hamster3.currency;
 import cn.hamster3.api.utils.LogUtils;
 import cn.hamster3.currency.api.CurrencyAPI;
 import cn.hamster3.currency.command.CurrencyCommand;
+import cn.hamster3.currency.command.VaultPayCommand;
+import cn.hamster3.currency.command.VaultSeeCommand;
+import cn.hamster3.currency.command.VaultTopCommand;
 import cn.hamster3.currency.core.FileManager;
 import cn.hamster3.currency.core.IDataManager;
 import cn.hamster3.currency.core.SQLDataManager;
@@ -116,6 +119,10 @@ public final class HamsterCurrency extends JavaPlugin {
 
         Bukkit.getServicesManager().register(Economy.class, hook, this, ServicePriority.Normal);
         logUtils.info("Vault经济系统注册成功!");
+
+        new VaultPayCommand(getCommand("payMoney"), dataManager);
+        new VaultSeeCommand(getCommand("balance"), dataManager);
+        new VaultTopCommand(getCommand("balanceTop"), dataManager);
 
         logUtils.infoDividingLine();
     }

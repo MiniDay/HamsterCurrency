@@ -1,21 +1,26 @@
 package cn.hamster3.currency.command;
 
 import cn.hamster3.api.command.CommandManager;
+import cn.hamster3.currency.core.FileManager;
 import cn.hamster3.currency.core.IDataManager;
+import cn.hamster3.currency.core.SQLDataManager;
 import org.bukkit.command.PluginCommand;
 
 public class CurrencyCommand extends CommandManager {
     public CurrencyCommand(PluginCommand command, IDataManager dataManager) {
         super(command);
         addCommandExecutor(
-                new AddCommand(dataManager),
-                new PayCommand(dataManager),
+                new CurrencyAddCommand(dataManager),
+                new CurrencyPayCommand(dataManager),
                 new ReloadCommand(dataManager),
-                new SeeCommand(dataManager),
-                new SetCommand(dataManager),
-                new TakeCommand(dataManager),
-                new TopCommand(dataManager)
+                new CurrencySeeCommand(dataManager),
+                new CurrencySetCommand(dataManager),
+                new CurrencyTakeCommand(dataManager),
+                new CurrencyTopCommand(dataManager)
         );
+        if (FileManager.isUseBC()) {
+            addCommandExecutor(new CurrencyImportCommand((SQLDataManager) dataManager));
+        }
         command.setExecutor(this);
         command.setTabCompleter(this);
     }
