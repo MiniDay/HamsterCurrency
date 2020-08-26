@@ -34,12 +34,12 @@ public class PlaceholderHook extends PlaceholderExpansion {
 
     @Override
     public String onRequest(OfflinePlayer player, @NotNull String params) {
-        return null;
+        PlayerData data = dataManager.getPlayerData(player.getUniqueId());
+        return String.format("%.2f", data.getPlayerCurrency(params));
     }
 
     @Override
     public String onPlaceholderRequest(Player player, @NotNull String params) {
-        PlayerData data = dataManager.getPlayerData(player.getUniqueId());
-        return String.format("%.2f", data.getPlayerCurrency(params));
+        return onRequest(player, params);
     }
 }
