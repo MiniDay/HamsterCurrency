@@ -28,7 +28,6 @@ public enum Message {
         this.message = message;
     }
 
-    @SuppressWarnings("unused")
     public String getMessage() {
         return message;
     }

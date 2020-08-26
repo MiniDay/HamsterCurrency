@@ -1,5 +1,6 @@
 package cn.hamster3.currency.data;
 
+import cn.hamster3.currency.HamsterCurrency;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import org.bukkit.Bukkit;
@@ -20,10 +21,16 @@ public class PlayerData {
         playerCurrencies = new HashMap<>();
     }
 
+    public PlayerData(UUID uuid, String playerName) {
+        this.uuid = uuid;
+        this.playerName = playerName;
+        playerCurrencies = new HashMap<>();
+    }
+
     public PlayerData(JsonObject object) {
         uuid = UUID.fromString(object.get("uuid").getAsString());
-        OfflinePlayer player = Bukkit.getPlayer(uuid);
-        if (player != null && player.getName() != null) {
+        OfflinePlayer player = Bukkit.getOfflinePlayer(uuid);
+        if (player.getName() != null) {
             playerName = player.getName();
         } else if (object.has("playerName") && !object.get("playerName").isJsonNull()) {
             playerName = object.get("playerName").getAsString();

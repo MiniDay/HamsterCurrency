@@ -47,8 +47,7 @@ public final class HamsterCurrency extends JavaPlugin {
                 logUtils.info("事件监听器初始化完成!");
                 dataManager = sqlDataManager;
             } catch (SQLException | ClassNotFoundException e) {
-                logUtils.warning("插件加载时遇到了一个错误: ");
-                e.printStackTrace();
+                logUtils.error("插件加载时遇到了一个错误: ", e);
                 loaded = false;
             }
         }
