@@ -58,13 +58,11 @@ public class VaultPayCommand extends CommandManager {
             return true;
         }
 
-        Player player = (Player) sender;
         PlayerData toData = dataManager.getPlayerData(args[0]);
         if (toData == null) {
             sender.sendMessage(Message.playerNotFound.toString());
             return true;
         }
-        PlayerData fromData = dataManager.getPlayerData(player.getUniqueId());
 
         double amount;
         try {
@@ -78,6 +76,16 @@ public class VaultPayCommand extends CommandManager {
             return true;
         }
 
+        Player player = (Player) sender;
+        PlayerData fromData = dataManager.getPlayerData(player.getUniqueId());
+        if (fromData.getPlayerCurrency(type.getId()) < amount) {
+            sender.sendMessage(
+                    Message.currencyNotEnough.toString()
+                            .replace("%type%", type.getId())
+            );
+            return true;
+        }
+
         fromData.setPlayerCurrency(type.getId(), fromData.getPlayerCurrency(type.getId()) - amount);
         toData.setPlayerCurrency(type.getId(), toData.getPlayerCurrency(type.getId()) + amount);
         dataManager.savePlayerData(fromData);
@@ -86,13 +94,7 @@ public class VaultPayCommand extends CommandManager {
                 Message.paySuccess.toString()
                         .replace("%player%", toData.getPlayerName())
                         .replace("%type%", type.getId())
-                        .replace("%amount%", String.format("%.2f", toData.getPlayerCurrency(type.getId())))
-        );
-        sender.sendMessage(
-                Message.paySuccess.toString()
-                        .replace("%player%", toData.getPlayerName())
-                        .replace("%type%", type.getId())
-                        .replace("%amount%", String.format("%.2f", toData.getPlayerCurrency(type.getId())))
+                        .replace("%amount%", String.format("%.2f", amount))
         );
         if (FileManager.isUseBC()) {
             HamsterService.sendPlayerMessage(
@@ -100,7 +102,7 @@ public class VaultPayCommand extends CommandManager {
                     Message.receivePay.toString()
                             .replace("%player%", player.getName())
                             .replace("%type%", type.getId())
-                            .replace("%amount%", String.format("%.2f", toData.getPlayerCurrency(type.getId())))
+                            .replace("%amount%", String.format("%.2f", amount))
             );
         } else {
             Player toPlayer = Bukkit.getPlayer(toData.getUuid());
@@ -109,7 +111,7 @@ public class VaultPayCommand extends CommandManager {
                         Message.receivePay.toString()
                                 .replace("%player%", player.getName())
                                 .replace("%type%", type.getId())
-                                .replace("%amount%", String.format("%.2f", toData.getPlayerCurrency(type.getId())))
+                                .replace("%amount%", String.format("%.2f", amount))
                 );
             }
         }

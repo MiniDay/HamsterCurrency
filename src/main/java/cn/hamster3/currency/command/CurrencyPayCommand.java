@@ -96,13 +96,7 @@ public class CurrencyPayCommand extends CommandExecutor {
                 Message.paySuccess.toString()
                         .replace("%player%", toData.getPlayerName())
                         .replace("%type%", type.getId())
-                        .replace("%amount%", String.format("%.2f", toData.getPlayerCurrency(type.getId())))
-        );
-        sender.sendMessage(
-                Message.paySuccess.toString()
-                        .replace("%player%", toData.getPlayerName())
-                        .replace("%type%", type.getId())
-                        .replace("%amount%", String.format("%.2f", toData.getPlayerCurrency(type.getId())))
+                        .replace("%amount%", String.format("%.2f", amount))
         );
         if (FileManager.isUseBC()) {
             HamsterService.sendPlayerMessage(
@@ -110,7 +104,7 @@ public class CurrencyPayCommand extends CommandExecutor {
                     Message.receivePay.toString()
                             .replace("%player%", player.getName())
                             .replace("%type%", type.getId())
-                            .replace("%amount%", String.format("%.2f", toData.getPlayerCurrency(type.getId())))
+                            .replace("%amount%", String.format("%.2f", amount))
             );
         } else {
             Player toPlayer = Bukkit.getPlayer(toData.getUuid());
@@ -119,7 +113,7 @@ public class CurrencyPayCommand extends CommandExecutor {
                         Message.receivePay.toString()
                                 .replace("%player%", player.getName())
                                 .replace("%type%", type.getId())
-                                .replace("%amount%", String.format("%.2f", toData.getPlayerCurrency(type.getId())))
+                                .replace("%amount%", String.format("%.2f", amount))
                 );
             }
         }
