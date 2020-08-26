@@ -119,8 +119,8 @@ public class VaultPayCommand extends CommandManager {
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         if (args.length == 1) {
-            List<String> types = dataManager.getCurrencyTypes().stream().map(CurrencyType::getId).collect(Collectors.toList());
-            return HamsterAPI.startWith(types, args[0]);
+            List<String> types = dataManager.getPlayerData().stream().map(PlayerData::getPlayerName).collect(Collectors.toList());
+            return HamsterAPI.startWithIgnoreCase(types, args[0]);
         }
         return null;
     }

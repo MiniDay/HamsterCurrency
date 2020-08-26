@@ -35,7 +35,7 @@ public class CurrencyType {
 
         CurrencyType that = (CurrencyType) o;
 
-        return id.equals(that.id);
+        return id.equalsIgnoreCase(that.id);
     }
 
     @Override

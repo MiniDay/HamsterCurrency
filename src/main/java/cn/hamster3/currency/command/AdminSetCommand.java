@@ -89,11 +89,12 @@ public abstract class AdminSetCommand extends CommandExecutor {
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         switch (args.length) {
             case 2: {
-                return HamsterAPI.getOnlinePlayersName(args[1]);
+                List<String> types = dataManager.getPlayerData().stream().map(PlayerData::getPlayerName).collect(Collectors.toList());
+                return HamsterAPI.startWithIgnoreCase(types, args[1]);
             }
             case 3: {
                 List<String> types = dataManager.getCurrencyTypes().stream().map(CurrencyType::getId).collect(Collectors.toList());
-                return HamsterAPI.startWith(types, args[2]);
+                return HamsterAPI.startWithIgnoreCase(types, args[2]);
             }
         }
         return null;

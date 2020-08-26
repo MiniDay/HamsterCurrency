@@ -1,5 +1,6 @@
 package cn.hamster3.currency.command;
 
+import cn.hamster3.api.HamsterAPI;
 import cn.hamster3.api.command.CommandExecutor;
 import cn.hamster3.currency.core.FileManager;
 import cn.hamster3.currency.core.IDataManager;
@@ -13,6 +14,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class CurrencyPayCommand extends CommandExecutor {
     private final IDataManager dataManager;
@@ -126,6 +128,16 @@ public class CurrencyPayCommand extends CommandExecutor {
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+        switch (args.length) {
+            case 2: {
+                List<String> types = dataManager.getPlayerData().stream().map(PlayerData::getPlayerName).collect(Collectors.toList());
+                return HamsterAPI.startWithIgnoreCase(types, args[1]);
+            }
+            case 3: {
+                List<String> types = dataManager.getCurrencyTypes().stream().map(CurrencyType::getId).collect(Collectors.toList());
+                return HamsterAPI.startWithIgnoreCase(types, args[2]);
+            }
+        }
         return null;
     }
 }
