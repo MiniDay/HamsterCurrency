@@ -72,10 +72,15 @@ public class VaultSeeCommand extends CommandManager {
     }
 
     @Override
+    @SuppressWarnings("DuplicatedCode")
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         if (args.length == 1) {
             List<String> types = dataManager.getPlayerData().stream().map(PlayerData::getPlayerName).collect(Collectors.toList());
-            return HamsterAPI.startWithIgnoreCase(types, args[0]);
+            types = HamsterAPI.startWithIgnoreCase(types, args[0]);
+            if (types.size() > 10) {
+                types = types.subList(0, 9);
+            }
+            return types;
         }
         return null;
     }

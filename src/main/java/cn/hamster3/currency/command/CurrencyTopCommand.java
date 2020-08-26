@@ -84,10 +84,15 @@ public class CurrencyTopCommand extends CommandExecutor {
     }
 
     @Override
+    @SuppressWarnings("DuplicatedCode")
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         if (args.length == 2) {
             List<String> types = dataManager.getPlayerData().stream().map(PlayerData::getPlayerName).collect(Collectors.toList());
-            return HamsterAPI.startWithIgnoreCase(types, args[1]);
+            types = HamsterAPI.startWithIgnoreCase(types, args[1]);
+            if (types.size() > 10) {
+                types = types.subList(0, 9);
+            }
+            return types;
         }
         return null;
     }
