@@ -6,6 +6,7 @@ import cn.hamster3.currency.command.CurrencyCommand;
 import cn.hamster3.currency.command.VaultPayCommand;
 import cn.hamster3.currency.command.VaultSeeCommand;
 import cn.hamster3.currency.command.VaultTopCommand;
+import cn.hamster3.currency.core.FileDataManager;
 import cn.hamster3.currency.core.FileManager;
 import cn.hamster3.currency.core.IDataManager;
 import cn.hamster3.currency.core.SQLDataManager;
@@ -39,7 +40,7 @@ public final class HamsterCurrency extends JavaPlugin {
         logUtils = new LogUtils(this);
         logUtils.infoDividingLine();
         if (FileManager.isUseBC()) {
-            logUtils.info("使用BC模式...");
+            logUtils.info("使用多服务器模式...");
             try {
                 SQLDataManager sqlDataManager = new SQLDataManager(this);
                 logUtils.info("SQL存档管理器初始化完成!");
@@ -50,6 +51,13 @@ public final class HamsterCurrency extends JavaPlugin {
                 logUtils.error("插件加载时遇到了一个错误: ", e);
                 loaded = false;
             }
+        } else {
+            logUtils.info("使用单服务器模式...");
+            FileDataManager fileDataManager = new FileDataManager(this);
+            logUtils.info("文件存档管理器初始化完成!");
+            listener = new CurrencyListener(this, fileDataManager);
+            logUtils.info("事件监听器初始化完成!");
+            dataManager = fileDataManager;
         }
         CurrencyAPI.setDataManager(dataManager);
         logUtils.info("API初始化完成!");

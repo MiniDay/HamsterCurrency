@@ -22,7 +22,7 @@ public class ReloadCommand extends CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        dataManager.reload();
+        dataManager.reloadConfig();
         sender.sendMessage("§a插件重载完成!");
         return true;
     }

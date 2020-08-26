@@ -5,9 +5,7 @@ import cn.hamster3.currency.core.FileManager;
 import cn.hamster3.currency.core.SQLDataManager;
 import cn.hamster3.service.spigot.HamsterService;
 import cn.hamster3.service.spigot.event.ServiceReceiveEvent;
-import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.player.PlayerJoinEvent;
 
 import java.util.UUID;
 
@@ -15,17 +13,8 @@ import java.util.UUID;
  * 跨服模式时使用这个监听器
  */
 public class SQLListener extends CurrencyListener {
-    private final HamsterCurrency plugin;
-    private final SQLDataManager dataManager;
-
     public SQLListener(HamsterCurrency plugin, SQLDataManager dataManager) {
-        this.plugin = plugin;
-        this.dataManager = dataManager;
-    }
-
-    @EventHandler(ignoreCancelled = true)
-    public void onPlayerJoin(PlayerJoinEvent event) {
-        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> dataManager.loadPlayerData(event.getPlayer().getUniqueId()));
+        super(plugin, dataManager);
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -34,6 +23,7 @@ public class SQLListener extends CurrencyListener {
             return;
         }
         String[] args = event.getMessage().split(" ");
+        SQLDataManager dataManager = (SQLDataManager) super.dataManager;
         switch (args[0]) {
             case "reload": {
                 if (!FileManager.isMainServer()) {

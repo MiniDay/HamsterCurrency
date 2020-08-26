@@ -206,7 +206,7 @@ public class SQLDataManager implements IDataManager {
     }
 
     @Override
-    public void reload() {
+    public void reloadConfig() {
         HamsterService.sendMessage("HamsterCurrency", "reload");
     }
 

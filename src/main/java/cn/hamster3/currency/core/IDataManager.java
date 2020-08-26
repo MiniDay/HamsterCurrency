@@ -23,7 +23,7 @@ public interface IDataManager {
     /**
      * 重载服务器
      */
-    void reload();
+    void reloadConfig();
 
     /**
      * 加载玩家的数据

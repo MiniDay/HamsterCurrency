@@ -1,7 +1,6 @@
 # HamsterCurrency
 [![](https://jitpack.io/v/cn.hamster3/HamsterCurrency.svg)](https://jitpack.io/#cn.hamster3/HamsterCurrency)  
 仓鼠的多货币插件  
-目前只支持BC跨服模式  
 
 # 依赖前置
 - [HamsterAPI](https://github.com/MiniDay/HamsterAPI/releases)
@@ -28,7 +27,7 @@
 	<dependency>
 	    <groupId>cn.hamster3</groupId>
 	    <artifactId>HamsterCurrency</artifactId>
-	    <version>1.1.0-SNAPSHOT</version>
+	    <version>1.3.0-SNAPSHOT</version>
 	</dependency>
 ```
 
@@ -45,7 +44,7 @@
 添加导入:  
 ```groovy
 	dependencies {
-	        implementation 'cn.hamster3:HamsterCurrency:1.1.0-SNAPSHOT'
+	        implementation 'cn.hamster3:HamsterCurrency:1.3.0-SNAPSHOT'
 	}
 ```
 

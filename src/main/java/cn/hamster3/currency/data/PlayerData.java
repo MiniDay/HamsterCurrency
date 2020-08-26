@@ -1,10 +1,11 @@
 package cn.hamster3.currency.data;
 
-import cn.hamster3.currency.HamsterCurrency;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -44,6 +45,22 @@ public class PlayerData {
         }
     }
 
+    @SuppressWarnings("ConstantConditions")
+    public PlayerData(ConfigurationSection config) {
+        uuid = UUID.fromString(config.getString("uuid"));
+        OfflinePlayer player = Bukkit.getOfflinePlayer(uuid);
+        if (player.getName() != null) {
+            playerName = player.getName();
+        } else {
+            playerName = config.getString("playerName");
+        }
+        playerCurrencies = new HashMap<>();
+        ConfigurationSection playerCurrenciesConfig = config.getConfigurationSection("playerCurrencies");
+        for (String key : playerCurrenciesConfig.getKeys(false)) {
+            playerCurrencies.put(key, playerCurrenciesConfig.getDouble(key));
+        }
+    }
+
     public JsonObject saveToJson() {
         JsonObject object = new JsonObject();
         object.addProperty("uuid", uuid.toString());
@@ -54,6 +71,18 @@ public class PlayerData {
         }
         object.add("playerCurrencies", playerCurrenciesJson);
         return object;
+    }
+
+    public YamlConfiguration saveToConfig() {
+        YamlConfiguration config = new YamlConfiguration();
+        config.set("uuid", uuid.toString());
+        config.set("playerName", playerName);
+        YamlConfiguration playerCurrenciesConfig = new YamlConfiguration();
+        for (Map.Entry<String, Double> entry : playerCurrencies.entrySet()) {
+            playerCurrenciesConfig.set(entry.getKey(), entry.getValue());
+        }
+        config.set("playerCurrencies", playerCurrenciesConfig);
+        return config;
     }
 
     public UUID getUuid() {
