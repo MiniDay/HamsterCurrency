@@ -170,6 +170,7 @@ public class SQLDataManager implements IDataManager {
 
     @Override
     public void onEnable() {
+        getLogUtils().infoDividingLine();
         getLogUtils().info("从数据库中读取玩家数据...");
         try {
             Statement statement = connection.createStatement();
@@ -190,12 +191,7 @@ public class SQLDataManager implements IDataManager {
             getLogUtils().error("从数据库中读取玩家数据时出现了一个异常:", e);
         }
         getLogUtils().info("从数据库中读取玩家数据完成!");
-
-        if (FileManager.isMainServer()) {
-            uploadConfigToSQL();
-        } else {
-            loadConfigFromSQL();
-        }
+        getLogUtils().infoDividingLine();
     }
 
     @Override
@@ -203,6 +199,15 @@ public class SQLDataManager implements IDataManager {
         // 因为SQL模式使用HamsterService前置
         // 服务器之间数据实时同步
         // 所以关服时无需保存任何数据
+    }
+
+    @Override
+    public void loadConfig() {
+        if (FileManager.isMainServer()) {
+            uploadConfigToSQL();
+        } else {
+            loadConfigFromSQL();
+        }
     }
 
     @Override

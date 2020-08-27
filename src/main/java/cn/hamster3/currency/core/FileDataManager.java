@@ -26,10 +26,14 @@ public class FileDataManager implements IDataManager {
 
     @Override
     public void onEnable() {
+        getLogUtils().infoDividingLine();
+        getLogUtils().info("从本地磁盘中读取玩家数据...");
+
         File dataFolder = new File(plugin.getDataFolder(), "PlayerData");
         if (dataFolder.mkdirs()) {
             getLogUtils().info("创建玩家存档文件夹...");
         }
+
         File[] files = dataFolder.listFiles();
         if (files != null) {
             for (File file : files) {
@@ -41,6 +45,8 @@ public class FileDataManager implements IDataManager {
                 }
             }
         }
+        getLogUtils().info("从本地磁盘中读取玩家数据完成!");
+        getLogUtils().infoDividingLine();
     }
 
     @Override
@@ -54,6 +60,11 @@ public class FileDataManager implements IDataManager {
                 getLogUtils().error("保存玩家 %s 的存档至文件时出现了一个异常!", e, data.getUuid());
             }
         }
+    }
+
+    @Override
+    public void loadConfig() {
+        reloadConfig();
     }
 
     @Override

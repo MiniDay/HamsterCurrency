@@ -20,6 +20,8 @@ public interface IDataManager {
      */
     void onDisable();
 
+    void loadConfig();
+
     /**
      * 重载服务器
      */

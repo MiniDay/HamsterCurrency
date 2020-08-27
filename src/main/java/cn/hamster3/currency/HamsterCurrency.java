@@ -74,7 +74,7 @@ public final class HamsterCurrency extends JavaPlugin {
             return;
         }
 
-        dataManager.onEnable();
+        dataManager.loadConfig();
 
         PluginCommand command = getCommand("HamsterCurrency");
         new CurrencyCommand(command, dataManager);
@@ -96,16 +96,22 @@ public final class HamsterCurrency extends JavaPlugin {
         logUtils.info("插件已启动!");
         logUtils.infoDividingLine();
 
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            dataManager.loadPlayerData(player.getUniqueId());
-        }
+        Bukkit.getScheduler().runTaskAsynchronously(this, () -> {
+            dataManager.onEnable();
+            for (Player player : Bukkit.getOnlinePlayers()) {
+                dataManager.loadPlayerData(player.getUniqueId());
+            }
+        });
     }
 
     private void registerVault() {
+        logUtils.infoDividingLine();
+
         if (!FileManager.isVaultHook()) {
+            Bukkit.getServicesManager().unregister(this);
+            logUtils.info("不使用Vault经济系统挂接...");
             return;
         }
-        logUtils.infoDividingLine();
 
         if (!Bukkit.getPluginManager().isPluginEnabled("Vault")) {
             logUtils.warning("未找到 Vault 插件!  取消注册Vault经济系统...");
