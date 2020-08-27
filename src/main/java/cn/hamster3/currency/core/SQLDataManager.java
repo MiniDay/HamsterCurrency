@@ -170,7 +170,6 @@ public class SQLDataManager implements IDataManager {
 
     @Override
     public void onEnable() {
-        getLogUtils().infoDividingLine();
         getLogUtils().info("从数据库中读取玩家数据...");
         try {
             Statement statement = connection.createStatement();
@@ -191,7 +190,6 @@ public class SQLDataManager implements IDataManager {
             getLogUtils().error("从数据库中读取玩家数据时出现了一个异常:", e);
         }
         getLogUtils().info("从数据库中读取玩家数据完成!");
-        getLogUtils().infoDividingLine();
     }
 
     @Override

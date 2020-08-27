@@ -26,7 +26,6 @@ public class FileDataManager implements IDataManager {
 
     @Override
     public void onEnable() {
-        getLogUtils().infoDividingLine();
         getLogUtils().info("从本地磁盘中读取玩家数据...");
 
         File dataFolder = new File(plugin.getDataFolder(), "PlayerData");
@@ -46,7 +45,6 @@ public class FileDataManager implements IDataManager {
             }
         }
         getLogUtils().info("从本地磁盘中读取玩家数据完成!");
-        getLogUtils().infoDividingLine();
     }
 
     @Override

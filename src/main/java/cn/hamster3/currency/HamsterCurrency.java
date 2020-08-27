@@ -83,14 +83,6 @@ public final class HamsterCurrency extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(listener, this);
         logUtils.info("事件监听器已注册!");
 
-        if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
-            logUtils.info("检测到 PlaceholderAPI 已启动...");
-            new PlaceholderHook(dataManager).register();
-            logUtils.info("已挂载 PlaceholderAPI 变量!");
-        } else {
-            logUtils.info("未检测到 PlaceholderAPI!");
-        }
-
         registerVault();
 
         logUtils.info("插件已启动!");
@@ -100,6 +92,13 @@ public final class HamsterCurrency extends JavaPlugin {
             dataManager.onEnable();
             for (Player player : Bukkit.getOnlinePlayers()) {
                 dataManager.loadPlayerData(player.getUniqueId());
+            }
+            if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
+                logUtils.info("检测到 PlaceholderAPI 已启动...");
+                new PlaceholderHook(dataManager).register();
+                logUtils.info("已挂载 PlaceholderAPI 变量!");
+            } else {
+                logUtils.info("未检测到 PlaceholderAPI!");
             }
         });
     }
