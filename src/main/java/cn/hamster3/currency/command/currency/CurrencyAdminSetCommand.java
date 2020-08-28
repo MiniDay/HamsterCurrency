@@ -1,4 +1,4 @@
-package cn.hamster3.currency.command;
+package cn.hamster3.currency.command.currency;
 
 import cn.hamster3.api.HamsterAPI;
 import cn.hamster3.api.command.CommandExecutor;
@@ -9,19 +9,18 @@ import cn.hamster3.currency.data.PlayerData;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public abstract class AdminSetCommand extends CommandExecutor {
+public abstract class CurrencyAdminSetCommand extends CommandExecutor {
     protected final IDataManager dataManager;
 
-    public AdminSetCommand(IDataManager dataManager, String name, String description, String permission, String permissionMessage) {
+    public CurrencyAdminSetCommand(IDataManager dataManager, String name, String description, String permission) {
         super(
                 name,
                 description,
                 permission,
-                permissionMessage,
+                Message.notHasPermission.toString(),
                 new String[]{
                         "玩家",
                         "货币类型",

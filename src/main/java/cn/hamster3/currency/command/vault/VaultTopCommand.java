@@ -1,4 +1,4 @@
-package cn.hamster3.currency.command;
+package cn.hamster3.currency.command.vault;
 
 import cn.hamster3.api.command.CommandManager;
 import cn.hamster3.currency.core.FileManager;

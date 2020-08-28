@@ -2,10 +2,11 @@ package cn.hamster3.currency;
 
 import cn.hamster3.api.utils.LogUtils;
 import cn.hamster3.currency.api.CurrencyAPI;
-import cn.hamster3.currency.command.CurrencyCommand;
-import cn.hamster3.currency.command.VaultPayCommand;
-import cn.hamster3.currency.command.VaultSeeCommand;
-import cn.hamster3.currency.command.VaultTopCommand;
+import cn.hamster3.currency.command.currency.CurrencyCommand;
+import cn.hamster3.currency.command.vault.VaultCommand;
+import cn.hamster3.currency.command.vault.VaultPayCommand;
+import cn.hamster3.currency.command.vault.VaultSeeCommand;
+import cn.hamster3.currency.command.vault.VaultTopCommand;
 import cn.hamster3.currency.core.FileDataManager;
 import cn.hamster3.currency.core.FileManager;
 import cn.hamster3.currency.core.IDataManager;
@@ -135,6 +136,7 @@ public final class HamsterCurrency extends JavaPlugin {
         new VaultPayCommand(getCommand("payMoney"), dataManager);
         new VaultSeeCommand(getCommand("balance"), dataManager);
         new VaultTopCommand(getCommand("balanceTop"), dataManager);
+        new VaultCommand(getCommand("economy"), dataManager);
 
         logUtils.infoDividingLine();
     }

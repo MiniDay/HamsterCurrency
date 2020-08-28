@@ -1,7 +1,7 @@
-package cn.hamster3.currency.command;
+package cn.hamster3.currency.command.vault;
 
 import cn.hamster3.api.HamsterAPI;
-import cn.hamster3.api.command.CommandExecutor;
+import cn.hamster3.api.command.CommandManager;
 import cn.hamster3.currency.core.FileManager;
 import cn.hamster3.currency.core.IDataManager;
 import cn.hamster3.currency.core.Message;
@@ -11,27 +11,20 @@ import cn.hamster3.service.spigot.HamsterService;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.PluginCommand;
 import org.bukkit.entity.Player;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class CurrencyPayCommand extends CommandExecutor {
+public class VaultPayCommand extends CommandManager {
     private final IDataManager dataManager;
 
-    public CurrencyPayCommand(IDataManager dataManager) {
-        super(
-                "pay",
-                "向其他玩家转账",
-                "currency.pay",
-                Message.notHasPermission.toString(),
-                new String[]{
-                        "玩家",
-                        "货币类型",
-                        "数额"
-                }
-        );
+    public VaultPayCommand(PluginCommand command, IDataManager dataManager) {
+        super(command);
         this.dataManager = dataManager;
+        command.setExecutor(this);
+        command.setTabCompleter(this);
     }
 
     @Override
@@ -40,37 +33,40 @@ public class CurrencyPayCommand extends CommandExecutor {
     }
 
     @Override
+    public boolean checkPermission(CommandSender sender) {
+        return sender.hasPermission("currency.pay");
+    }
+
+    @Override
     @SuppressWarnings("DuplicatedCode")
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (args.length < 2) {
+    protected boolean defaultCommand(CommandSender sender, Command command, String label, String[] args) {
+        if (!FileManager.isVaultHook()) {
+            sender.sendMessage(Message.vaultEconomySetError.toString());
+            return true;
+        }
+        CurrencyType type = dataManager.getCurrencyType(FileManager.getVaultCurrencyType());
+        if (type == null) {
+            sender.sendMessage(Message.vaultEconomySetError.toString());
+            return true;
+        }
+        if (args.length < 1) {
             sender.sendMessage(Message.notInputPlayerName.toString());
             return true;
         }
-        PlayerData toData = dataManager.getPlayerData(args[1]);
+        if (args.length < 2) {
+            sender.sendMessage(Message.notInputPayAmount.toString());
+            return true;
+        }
+
+        PlayerData toData = dataManager.getPlayerData(args[0]);
         if (toData == null) {
             sender.sendMessage(Message.playerNotFound.toString());
             return true;
         }
-        if (args.length < 3) {
-            sender.sendMessage(Message.notInputCurrencyType.toString());
-            return true;
-        }
-        CurrencyType type = dataManager.getCurrencyType(args[2]);
-        if (type == null) {
-            sender.sendMessage(Message.currencyTypeNotFound.toString());
-            return true;
-        }
-        if (type.isCanTransfer()) {
-            sender.sendMessage(Message.currencyTypeCantTransfer.toString().replace("%type%", type.getId()));
-            return true;
-        }
-        if (args.length < 4) {
-            sender.sendMessage(Message.notInputPayAmount.toString());
-            return true;
-        }
+
         double amount;
         try {
-            amount = Double.parseDouble(args[3]);
+            amount = Double.parseDouble(args[1]);
         } catch (NumberFormatException e) {
             sender.sendMessage(Message.amountNumberError.toString());
             return true;
@@ -79,6 +75,7 @@ public class CurrencyPayCommand extends CommandExecutor {
             sender.sendMessage(Message.amountNumberError.toString());
             return true;
         }
+
         Player player = (Player) sender;
         PlayerData fromData = dataManager.getPlayerData(player.getUniqueId());
         if (fromData.getPlayerCurrency(type.getId()) < amount) {
@@ -88,6 +85,7 @@ public class CurrencyPayCommand extends CommandExecutor {
             );
             return true;
         }
+
         fromData.setPlayerCurrency(type.getId(), fromData.getPlayerCurrency(type.getId()) - amount);
         toData.setPlayerCurrency(type.getId(), toData.getPlayerCurrency(type.getId()) + amount);
         dataManager.savePlayerData(fromData);
@@ -123,23 +121,13 @@ public class CurrencyPayCommand extends CommandExecutor {
     @Override
     @SuppressWarnings("DuplicatedCode")
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
-        switch (args.length) {
-            case 2: {
-                List<String> types = dataManager.getPlayerData().stream().map(PlayerData::getPlayerName).collect(Collectors.toList());
-                types = HamsterAPI.startWithIgnoreCase(types, args[1]);
-                if (types.size() > 10) {
-                    types = types.subList(0, 9);
-                }
-                return types;
+        if (args.length == 1) {
+            List<String> types = dataManager.getPlayerData().stream().map(PlayerData::getPlayerName).collect(Collectors.toList());
+            types = HamsterAPI.startWithIgnoreCase(types, args[0]);
+            if (types.size() > 10) {
+                types = types.subList(0, 9);
             }
-            case 3: {
-                List<String> types = dataManager.getCurrencyTypes().stream().map(CurrencyType::getId).collect(Collectors.toList());
-                types = HamsterAPI.startWithIgnoreCase(types, args[2]);
-                if (types.size() > 10) {
-                    types = types.subList(0, 9);
-                }
-                return types;
-            }
+            return types;
         }
         return null;
     }

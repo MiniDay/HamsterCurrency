@@ -50,6 +50,14 @@ public abstract class CurrencyAPI {
         dataManager.savePlayerData(data);
     }
 
+    public static boolean hasPlayerCurrency(UUID uuid, String currencyID, double amount) {
+        PlayerData data = dataManager.getPlayerData(uuid);
+        if (data == null) {
+            return false;
+        }
+        return data.getPlayerCurrency(currencyID) >= amount;
+    }
+
     public HashSet<CurrencyType> getAllCurrencyType() {
         return new HashSet<>();
     }

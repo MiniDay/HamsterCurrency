@@ -1,4 +1,4 @@
-package cn.hamster3.currency.command;
+package cn.hamster3.currency.command.currency;
 
 import cn.hamster3.api.command.CommandExecutor;
 import cn.hamster3.currency.core.Message;

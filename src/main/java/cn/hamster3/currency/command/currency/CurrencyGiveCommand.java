@@ -1,18 +1,16 @@
-package cn.hamster3.currency.command;
+package cn.hamster3.currency.command.currency;
 
 import cn.hamster3.currency.core.IDataManager;
-import cn.hamster3.currency.core.Message;
 import cn.hamster3.currency.data.CurrencyType;
 import cn.hamster3.currency.data.PlayerData;
 
-public class CurrencyAddCommand extends AdminSetCommand {
-    public CurrencyAddCommand(IDataManager dataManager) {
+public class CurrencyGiveCommand extends CurrencyAdminSetCommand {
+    public CurrencyGiveCommand(IDataManager dataManager) {
         super(
                 dataManager,
-                "add",
+                "give",
                 "为玩家货币添加余额",
-                "currency.add",
-                Message.notHasPermission.toString()
+                "currency.give"
         );
     }
 

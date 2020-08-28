@@ -1,6 +1,7 @@
-package cn.hamster3.currency.command;
+package cn.hamster3.currency.command.currency;
 
 import cn.hamster3.api.command.CommandManager;
+import cn.hamster3.currency.command.ReloadCommand;
 import cn.hamster3.currency.core.FileManager;
 import cn.hamster3.currency.core.IDataManager;
 import cn.hamster3.currency.core.SQLDataManager;
@@ -10,7 +11,7 @@ public class CurrencyCommand extends CommandManager {
     public CurrencyCommand(PluginCommand command, IDataManager dataManager) {
         super(command);
         addCommandExecutor(
-                new CurrencyAddCommand(dataManager),
+                new CurrencyGiveCommand(dataManager),
                 new CurrencyPayCommand(dataManager),
                 new ReloadCommand(dataManager),
                 new CurrencySeeCommand(dataManager),
