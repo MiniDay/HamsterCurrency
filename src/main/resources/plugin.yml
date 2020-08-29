@@ -25,9 +25,8 @@ commands:
     aliases: [baltop]
   payMoney:
     aliases: [pay]
-  ecomony:
+  economy:
     aliases: [eco, money]
-
 
 permissions:
   currency.import:
