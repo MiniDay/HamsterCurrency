@@ -49,7 +49,7 @@ public final class HamsterCurrency extends JavaPlugin {
                 logUtils.info("事件监听器初始化完成!");
                 dataManager = sqlDataManager;
             } catch (SQLException | ClassNotFoundException e) {
-                logUtils.error("插件加载时遇到了一个错误: ", e);
+                logUtils.error(e, "插件加载时遇到了一个错误: ");
                 loaded = false;
             }
         } else {

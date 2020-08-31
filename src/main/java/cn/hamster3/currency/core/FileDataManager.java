@@ -40,7 +40,7 @@ public class FileDataManager implements IDataManager {
                     PlayerData data = new PlayerData(YamlConfiguration.loadConfiguration(file));
                     playerData.add(data);
                 } catch (Exception e) {
-                    getLogUtils().error("加载玩家存档文件 %s 时出现了一个异常!", e, file.getName());
+                    getLogUtils().error(e, "加载玩家存档文件 %s 时出现了一个异常!", file.getName());
                 }
             }
         }
@@ -55,7 +55,7 @@ public class FileDataManager implements IDataManager {
             try {
                 data.saveToConfig().save(dataFile);
             } catch (IOException e) {
-                getLogUtils().error("保存玩家 %s 的存档至文件时出现了一个异常!", e, data.getUuid());
+                getLogUtils().error(e, "保存玩家 %s 的存档至文件时出现了一个异常!", data.getUuid());
             }
         }
     }

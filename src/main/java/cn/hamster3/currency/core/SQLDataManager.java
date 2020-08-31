@@ -68,7 +68,7 @@ public class SQLDataManager implements IDataManager {
             statement.close();
             getLogUtils().info("配置文件上传完成!");
         } catch (SQLException e) {
-            getLogUtils().error("插件上传 pluginConfig 至数据库时遇到了一个异常: ", e);
+            getLogUtils().error(e, "插件上传 pluginConfig 至数据库时遇到了一个异常: ");
         }
         loadConfig(config);
         HamsterService.sendMessage("HamsterCurrency", "uploadConfigToSQL %s", HamsterService.getServerName());
@@ -89,7 +89,7 @@ public class SQLDataManager implements IDataManager {
                         try {
                             config.loadFromString(data);
                         } catch (InvalidConfigurationException e) {
-                            getLogUtils().error("插件加载 %s 时遇到了一个异常: ", e, title);
+                            getLogUtils().error(e, "插件加载 %s 时遇到了一个异常: ", title);
                         }
                         loadConfig(config);
                     }
@@ -98,7 +98,7 @@ public class SQLDataManager implements IDataManager {
             statement.close();
             getLogUtils().info("配置文件下载完成!");
         } catch (SQLException e) {
-            getLogUtils().error("插件从数据库中下载 pluginConfig 时遇到了一个异常: ", e);
+            getLogUtils().error(e, "插件从数据库中下载 pluginConfig 时遇到了一个异常: ");
         }
     }
 
@@ -114,7 +114,7 @@ public class SQLDataManager implements IDataManager {
                 currencyTypes.add(new CurrencyType(currencyTypesConfig.getConfigurationSection(key)));
                 getLogUtils().warning("已加载货币类型: %s", key);
             } catch (Exception e) {
-                getLogUtils().error("加载货币类型 %s 时出现了一个错误: ", e, key);
+                getLogUtils().error(e, "加载货币类型 %s 时出现了一个错误: ", key);
             }
         }
         FileManager.setPluginConfig(config);
@@ -148,7 +148,7 @@ public class SQLDataManager implements IDataManager {
                         data.setPlayerCurrency(currencyType, money);
                         getLogUtils().info("已从其他插件中加载了玩家 %s 的存档数据.", data.getUuid());
                     } catch (Exception e) {
-                        getLogUtils().error("导入某一条数据时发生了一个错误: ", e);
+                        getLogUtils().error(e, "导入某一条数据时发生了一个错误: ");
                     }
                 }
                 for (PlayerData data : playerData) {
@@ -163,7 +163,7 @@ public class SQLDataManager implements IDataManager {
                 }
                 statement.close();
             } catch (SQLException e) {
-                getLogUtils().error("从其他插件中导入数据时发生了一个异常:", e);
+                getLogUtils().error(e, "从其他插件中导入数据时发生了一个异常:");
             }
         });
     }
@@ -181,13 +181,13 @@ public class SQLDataManager implements IDataManager {
                     PlayerData data = new PlayerData(parser.parse(string).getAsJsonObject());
                     playerData.add(data);
                 } catch (Exception e) {
-                    getLogUtils().error("从数据库中读取玩家 %s 的存档( %s )时出现了一个异常: ", e, uuid, string);
+                    getLogUtils().error(e, "从数据库中读取玩家 %s 的存档( %s )时出现了一个异常: ", uuid, string);
                 }
             }
             set.close();
             statement.close();
         } catch (SQLException e) {
-            getLogUtils().error("从数据库中读取玩家数据时出现了一个异常:", e);
+            getLogUtils().error(e, "从数据库中读取玩家数据时出现了一个异常:");
         }
         getLogUtils().info("从数据库中读取玩家数据完成!");
     }
@@ -227,7 +227,7 @@ public class SQLDataManager implements IDataManager {
                 try {
                     data = new PlayerData(parser.parse(string).getAsJsonObject());
                 } catch (Exception e) {
-                    getLogUtils().error("从数据库中读取玩家 %s 的存档( %s )时出现了一个异常: ", e, uuid, string);
+                    getLogUtils().error(e, "从数据库中读取玩家 %s 的存档( %s )时出现了一个异常: ", uuid, string);
                     statement.close();
                     return;
                 }
@@ -243,7 +243,7 @@ public class SQLDataManager implements IDataManager {
             statement.close();
             getLogUtils().info("已加载玩家 %s 的存档数据.", data.getUuid());
         } catch (SQLException e) {
-            getLogUtils().error("加载玩家 %s 的存档数据时出错!", e, uuid);
+            getLogUtils().error(e, "加载玩家 %s 的存档数据时出错!", uuid);
         }
     }
 
@@ -260,7 +260,7 @@ public class SQLDataManager implements IDataManager {
                         ));
                         statement.close();
                     } catch (SQLException e) {
-                        getLogUtils().error("保存玩家 %s 的存档数据时出错!", e, data.getUuid());
+                        getLogUtils().error(e, "保存玩家 %s 的存档数据时出错!", data.getUuid());
                     }
                     getLogUtils().info("已保存玩家 %s 的存档数据.", data.getUuid());
                     HamsterService.sendMessage("HamsterCurrency",
