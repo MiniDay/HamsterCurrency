@@ -10,7 +10,7 @@ public class VaultSetCommand extends VaultAdminSetCommand {
                 dataManager,
                 "set",
                 "设置玩家的金币",
-                "currency.add"
+                "currency.set"
         );
     }
 
