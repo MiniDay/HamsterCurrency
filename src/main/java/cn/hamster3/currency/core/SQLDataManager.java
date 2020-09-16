@@ -263,8 +263,12 @@ public class SQLDataManager implements IDataManager {
                         getLogUtils().error(e, "保存玩家 %s 的存档数据时出错!", data.getUuid());
                     }
                     getLogUtils().info("已保存玩家 %s 的存档数据.", data.getUuid());
-                    HamsterService.sendMessage("HamsterCurrency",
-                            "savedPlayerData %s %s", data.getUuid(), HamsterService.getServerName());
+                    HamsterService.sendMessage(
+                            "HamsterCurrency",
+                            "savedPlayerData %s %s",
+                            data.getUuid(),
+                            HamsterService.getServerName()
+                    );
                 });
     }
 

@@ -82,8 +82,7 @@ public class CurrencySeeCommand extends CommandExecutor {
             return HamsterAPI.startWith(types, args[1]);
         }
         if (args.length == 3) {
-            List<String> names = dataManager.getPlayerData().stream().map(PlayerData::getPlayerName).collect(Collectors.toList());
-            return HamsterAPI.startWith(names, args[2]);
+            return HamsterAPI.getOnlinePlayersName(args[2]);
         }
         return null;
     }

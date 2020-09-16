@@ -90,12 +90,7 @@ public abstract class CurrencyAdminSetCommand extends CommandExecutor {
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         switch (args.length) {
             case 2: {
-                List<String> types = dataManager.getPlayerData().stream().map(PlayerData::getPlayerName).collect(Collectors.toList());
-                types = HamsterAPI.startWithIgnoreCase(types, args[1]);
-                if (types.size() > 10) {
-                    types = types.subList(0, 9);
-                }
-                return types;
+                return HamsterAPI.getOnlinePlayersName(args[1]);
             }
             case 3: {
                 List<String> types = dataManager.getCurrencyTypes().stream().map(CurrencyType::getId).collect(Collectors.toList());
