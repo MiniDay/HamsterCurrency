@@ -106,7 +106,7 @@ public class FileDataManager implements IDataManager {
     public PlayerData getPlayerData(String name) {
         synchronized (SQLDataManager.class) {
             for (PlayerData data : playerData) {
-                if (name.equalsIgnoreCase(data.getPlayerName())) {
+                if (name.equals(data.getPlayerName())) {
                     return data;
                 }
             }
