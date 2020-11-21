@@ -48,6 +48,7 @@ public class SQLDataManager implements IDataManager {
                 "title VARCHAR(64) PRIMARY KEY," +
                 "data TEXT" +
                 ");");
+
         statement.close();
     }
 

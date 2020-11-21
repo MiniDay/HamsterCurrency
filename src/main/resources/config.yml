@@ -20,11 +20,11 @@ datasource:
   template: true
 
 currencyTypes:
-  "金币":
-    canTransfer: true
   # 货币ID
-  "一周年活动代币":
+  "金币":
     # 是否允许转账
+    canTransfer: true
+  "一周年活动代币":
     canTransfer: false
   "比特币":
     canTransfer: true
