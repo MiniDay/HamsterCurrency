@@ -105,8 +105,6 @@ public class SQLDataManager implements IDataManager {
 
     @SuppressWarnings("ConstantConditions")
     private void loadConfig(FileConfiguration config) {
-        getLogUtils().infoDividingLine();
-
         getLogUtils().info("加载配置文件...");
         currencyTypes.clear();
         ConfigurationSection currencyTypesConfig = config.getConfigurationSection("currencyTypes");
@@ -120,8 +118,6 @@ public class SQLDataManager implements IDataManager {
         }
         FileManager.setPluginConfig(config);
         getLogUtils().info("配置文件加载完成!");
-
-        getLogUtils().infoDividingLine();
     }
 
     public void importFromOtherPluginData(String database, String table, String uuidCol, String nameCol, String moneyCol, String currencyType) {
@@ -203,7 +199,7 @@ public class SQLDataManager implements IDataManager {
     @Override
     public void loadConfig() {
         if (FileManager.isMainServer()) {
-            uploadConfigToSQL();
+            Bukkit.getScheduler().runTaskAsynchronously(plugin, this::uploadConfigToSQL);
         } else {
             loadConfigFromSQL();
         }

@@ -3,6 +3,8 @@ package cn.hamster3.currency.core;
 import cn.hamster3.currency.HamsterCurrency;
 import cn.hamster3.currency.data.CurrencyType;
 import cn.hamster3.currency.data.PlayerData;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
@@ -66,10 +68,26 @@ public class FileDataManager implements IDataManager {
     }
 
     @Override
+    @SuppressWarnings("ConstantConditions")
     public void reloadConfig() {
+        getLogUtils().info("加载配置文件...");
+
         plugin.saveDefaultConfig();
         plugin.reloadConfig();
-        FileManager.setPluginConfig(plugin.getConfig());
+        FileConfiguration config = plugin.getConfig();
+
+        currencyTypes.clear();
+        ConfigurationSection currencyTypesConfig = config.getConfigurationSection("currencyTypes");
+        for (String key : currencyTypesConfig.getKeys(false)) {
+            try {
+                currencyTypes.add(new CurrencyType(currencyTypesConfig.getConfigurationSection(key)));
+                getLogUtils().warning("已加载货币类型: %s", key);
+            } catch (Exception e) {
+                getLogUtils().error(e, "加载货币类型 %s 时出现了一个错误: ", key);
+            }
+        }
+        FileManager.setPluginConfig(config);
+        getLogUtils().info("配置文件加载完成!");
     }
 
     @Override

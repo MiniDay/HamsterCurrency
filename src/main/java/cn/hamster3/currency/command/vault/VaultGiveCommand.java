@@ -17,5 +17,6 @@ public class VaultGiveCommand extends VaultAdminSetCommand {
     @Override
     public void doSet(PlayerData data, CurrencyType type, double amount) {
         data.setPlayerCurrency(type.getId(), data.getPlayerCurrency(type.getId()) + amount);
+
     }
 }
