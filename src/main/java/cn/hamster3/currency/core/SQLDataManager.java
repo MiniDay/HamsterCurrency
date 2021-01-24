@@ -4,7 +4,8 @@ import cn.hamster3.api.HamsterAPI;
 import cn.hamster3.currency.HamsterCurrency;
 import cn.hamster3.currency.data.CurrencyType;
 import cn.hamster3.currency.data.PlayerData;
-import cn.hamster3.service.spigot.HamsterService;
+import cn.hamster3.service.spigot.api.ServiceInfoAPI;
+import cn.hamster3.service.spigot.api.ServiceMessageAPI;
 import com.google.gson.JsonParser;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
@@ -72,7 +73,7 @@ public class SQLDataManager implements IDataManager {
             getLogUtils().error(e, "插件上传 pluginConfig 至数据库时遇到了一个异常: ");
         }
         loadConfig(config);
-        HamsterService.sendMessage("HamsterCurrency", "uploadConfigToSQL %s", HamsterService.getServerName());
+        ServiceMessageAPI.sendMessage("HamsterCurrency", "uploadConfigToSQL");
     }
 
     @SuppressWarnings("SwitchStatementWithTooFewBranches")
@@ -155,8 +156,7 @@ public class SQLDataManager implements IDataManager {
                             data.saveToJson().toString()
                     ));
                     getLogUtils().info("已保存玩家 %s 的存档数据.", data.getUuid());
-                    HamsterService.sendMessage("HamsterCurrency",
-                            "savedPlayerData %s %s", data.getUuid(), HamsterService.getServerName());
+                    ServiceMessageAPI.sendMessage("HamsterCurrency", "savedPlayerData", data.getUuid().toString());
                 }
                 statement.close();
             } catch (SQLException e) {
@@ -207,7 +207,7 @@ public class SQLDataManager implements IDataManager {
 
     @Override
     public void reloadConfig() {
-        HamsterService.sendMessage("HamsterCurrency", "reload");
+        ServiceMessageAPI.sendMessage("HamsterCurrency", "reload");
     }
 
     @Override
@@ -260,11 +260,12 @@ public class SQLDataManager implements IDataManager {
                         getLogUtils().error(e, "保存玩家 %s 的存档数据时出错!", data.getUuid());
                     }
                     getLogUtils().info("已保存玩家 %s 的存档数据.", data.getUuid());
-                    HamsterService.sendMessage(
+                    ServiceMessageAPI.sendMessage(
                             "HamsterCurrency",
-                            "savedPlayerData %s %s",
-                            data.getUuid(),
-                            HamsterService.getServerName()
+                            "savedPlayerData",
+                            "%s %s",
+                            data.getUuid().toString(),
+                            ServiceInfoAPI.getLocalServerName()
                     );
                 });
     }

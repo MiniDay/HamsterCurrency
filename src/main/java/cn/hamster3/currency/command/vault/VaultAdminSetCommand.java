@@ -11,7 +11,6 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 public abstract class VaultAdminSetCommand extends CommandExecutor {
     protected final IDataManager dataManager;

@@ -13,7 +13,6 @@ import org.bukkit.command.PluginCommand;
 import org.bukkit.entity.Player;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class VaultSeeCommand extends CommandManager {
     private final IDataManager dataManager;

@@ -7,7 +7,7 @@ import cn.hamster3.currency.core.IDataManager;
 import cn.hamster3.currency.core.Message;
 import cn.hamster3.currency.data.CurrencyType;
 import cn.hamster3.currency.data.PlayerData;
-import cn.hamster3.service.spigot.HamsterService;
+import cn.hamster3.service.spigot.api.ServiceMessageAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -99,7 +99,7 @@ public class CurrencyPayCommand extends CommandExecutor {
                         .replace("%amount%", String.format("%.2f", amount))
         );
         if (FileManager.isUseBC()) {
-            HamsterService.sendPlayerMessage(
+            ServiceMessageAPI.sendPlayerMessage(
                     toData.getUuid(),
                     Message.receivePay.toString()
                             .replace("%player%", player.getName())

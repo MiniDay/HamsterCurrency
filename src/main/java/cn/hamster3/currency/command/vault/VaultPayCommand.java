@@ -7,7 +7,7 @@ import cn.hamster3.currency.core.IDataManager;
 import cn.hamster3.currency.core.Message;
 import cn.hamster3.currency.data.CurrencyType;
 import cn.hamster3.currency.data.PlayerData;
-import cn.hamster3.service.spigot.HamsterService;
+import cn.hamster3.service.spigot.api.ServiceMessageAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -15,7 +15,6 @@ import org.bukkit.command.PluginCommand;
 import org.bukkit.entity.Player;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class VaultPayCommand extends CommandManager {
     private final IDataManager dataManager;
@@ -97,7 +96,7 @@ public class VaultPayCommand extends CommandManager {
                         .replace("%amount%", String.format("%.2f", amount))
         );
         if (FileManager.isUseBC()) {
-            HamsterService.sendPlayerMessage(
+            ServiceMessageAPI.sendPlayerMessage(
                     toData.getUuid(),
                     Message.receivePay.toString()
                             .replace("%player%", player.getName())

@@ -3,8 +3,9 @@ package cn.hamster3.currency.listener;
 import cn.hamster3.currency.HamsterCurrency;
 import cn.hamster3.currency.core.FileManager;
 import cn.hamster3.currency.core.SQLDataManager;
-import cn.hamster3.service.spigot.HamsterService;
-import cn.hamster3.service.spigot.event.ServiceReceiveEvent;
+import cn.hamster3.service.common.entity.ServiceMessageInfo;
+import cn.hamster3.service.spigot.api.ServiceInfoAPI;
+import cn.hamster3.service.spigot.event.MessageReceivedEvent;
 import org.bukkit.event.EventHandler;
 
 import java.util.UUID;
@@ -18,13 +19,13 @@ public class SQLListener extends CurrencyListener {
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void onServiceReceive(ServiceReceiveEvent event) {
-        if (!"HamsterCurrency".equals(event.getTag())) {
+    public void onServiceReceive(MessageReceivedEvent event) {
+        ServiceMessageInfo info = event.getMessageInfo();
+        if (!"HamsterCurrency".equals(info.getTag())) {
             return;
         }
-        String[] args = event.getMessage().split(" ");
         SQLDataManager dataManager = (SQLDataManager) super.dataManager;
-        switch (args[0]) {
+        switch (info.getAction()) {
             case "reload": {
                 if (!FileManager.isMainServer()) {
                     return;
@@ -34,7 +35,7 @@ public class SQLListener extends CurrencyListener {
                 break;
             }
             case "uploadConfigToSQL": {
-                if (HamsterService.getServerName().equals(args[1])) {
+                if (ServiceInfoAPI.getLocalSenderInfo().equals(info.getSenderInfo())) {
                     return;
                 }
                 HamsterCurrency.getLogUtils().info("主服务器已上传 pluginConfig, 准备从数据库中下载配置并重载插件...");
@@ -42,10 +43,10 @@ public class SQLListener extends CurrencyListener {
                 break;
             }
             case "savedPlayerData": {
-                if (HamsterService.getServerName().equals(args[2])) {
+                if (ServiceInfoAPI.getLocalSenderInfo().equals(info.getSenderInfo())) {
                     return;
                 }
-                UUID uuid = UUID.fromString(args[1]);
+                UUID uuid = UUID.fromString(info.getContentAsString());
                 dataManager.loadPlayerData(uuid);
                 break;
             }
