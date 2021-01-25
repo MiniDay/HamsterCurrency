@@ -18,6 +18,7 @@ public abstract class FileManager {
         pluginConfig = plugin.getConfig();
         useBC = pluginConfig.getBoolean("useBC", false);
         mainServer = pluginConfig.getBoolean("datasource.template");
+        setPluginConfig(pluginConfig);
     }
 
     public static FileConfiguration getPluginConfig() {
