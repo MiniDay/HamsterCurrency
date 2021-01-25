@@ -199,7 +199,7 @@ public class SQLDataManager implements IDataManager {
     @Override
     public void loadConfig() {
         if (FileManager.isMainServer()) {
-            Bukkit.getScheduler().runTaskAsynchronously(plugin, this::uploadConfigToSQL);
+            uploadConfigToSQL();
         } else {
             loadConfigFromSQL();
         }
@@ -263,9 +263,7 @@ public class SQLDataManager implements IDataManager {
                     ServiceMessageAPI.sendMessage(
                             "HamsterCurrency",
                             "savedPlayerData",
-                            "%s %s",
-                            data.getUuid().toString(),
-                            ServiceInfoAPI.getLocalServerName()
+                            data.getUuid().toString()
                     );
                 });
     }
