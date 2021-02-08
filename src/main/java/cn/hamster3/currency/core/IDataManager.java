@@ -3,6 +3,7 @@ package cn.hamster3.currency.core;
 import cn.hamster3.currency.data.CurrencyType;
 import cn.hamster3.currency.data.PlayerData;
 
+import java.util.ArrayList;
 import java.util.Set;
 import java.util.UUID;
 
@@ -45,7 +46,7 @@ public interface IDataManager {
 
     PlayerData getPlayerData(String name);
 
-    Set<PlayerData> getPlayerData();
+    ArrayList<PlayerData> getPlayerData();
 
     CurrencyType getCurrencyType(String id);
 

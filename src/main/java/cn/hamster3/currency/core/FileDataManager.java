@@ -9,6 +9,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -110,7 +111,7 @@ public class FileDataManager implements IDataManager {
 
     @Override
     public PlayerData getPlayerData(UUID uuid) {
-        synchronized (SQLDataManager.class) {
+        synchronized (playerData) {
             for (PlayerData data : playerData) {
                 if (uuid.equals(data.getUuid())) {
                     return data;
@@ -122,7 +123,7 @@ public class FileDataManager implements IDataManager {
 
     @Override
     public PlayerData getPlayerData(String name) {
-        synchronized (SQLDataManager.class) {
+        synchronized (playerData) {
             for (PlayerData data : playerData) {
                 if (name.equals(data.getPlayerName())) {
                     return data;
@@ -133,8 +134,10 @@ public class FileDataManager implements IDataManager {
     }
 
     @Override
-    public Set<PlayerData> getPlayerData() {
-        return playerData;
+    public ArrayList<PlayerData> getPlayerData() {
+        synchronized (playerData) {
+            return new ArrayList<>(playerData);
+        }
     }
 
     @Override

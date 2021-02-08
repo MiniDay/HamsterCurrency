@@ -4,7 +4,6 @@ import cn.hamster3.api.HamsterAPI;
 import cn.hamster3.currency.HamsterCurrency;
 import cn.hamster3.currency.data.CurrencyType;
 import cn.hamster3.currency.data.PlayerData;
-import cn.hamster3.service.spigot.api.ServiceInfoAPI;
 import cn.hamster3.service.spigot.api.ServiceMessageAPI;
 import com.google.gson.JsonParser;
 import org.bukkit.Bukkit;
@@ -18,10 +17,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Base64;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 import static cn.hamster3.currency.HamsterCurrency.getLogUtils;
 
@@ -133,20 +129,22 @@ public class SQLDataManager implements IDataManager {
             try {
                 Statement statement = connection.createStatement();
                 ResultSet set = statement.executeQuery(String.format("SELECT * FROM %s.%s;", database, table));
-                while (set.next()) {
-                    try {
-                        UUID uuid = UUID.fromString(set.getString(uuidCol));
-                        String name = set.getString(nameCol);
-                        double money = set.getDouble(moneyCol);
-                        PlayerData data = getPlayerData(uuid);
-                        if (data == null) {
-                            data = new PlayerData(uuid, name);
-                            playerData.add(data);
+                synchronized (playerData) {
+                    while (set.next()) {
+                        try {
+                            UUID uuid = UUID.fromString(set.getString(uuidCol));
+                            String name = set.getString(nameCol);
+                            double money = set.getDouble(moneyCol);
+                            PlayerData data = getPlayerData(uuid);
+                            if (data == null) {
+                                data = new PlayerData(uuid, name);
+                                playerData.add(data);
+                            }
+                            data.setPlayerCurrency(currencyType, money);
+                            getLogUtils().info("已从其他插件中加载了玩家 %s 的存档数据.", data.getUuid());
+                        } catch (Exception e) {
+                            getLogUtils().error(e, "导入某一条数据时发生了一个错误: ");
                         }
-                        data.setPlayerCurrency(currencyType, money);
-                        getLogUtils().info("已从其他插件中加载了玩家 %s 的存档数据.", data.getUuid());
-                    } catch (Exception e) {
-                        getLogUtils().error(e, "导入某一条数据时发生了一个错误: ");
                     }
                 }
                 for (PlayerData data : playerData) {
@@ -171,14 +169,16 @@ public class SQLDataManager implements IDataManager {
         try {
             Statement statement = connection.createStatement();
             ResultSet set = statement.executeQuery("SELECT * FROM hamster_currency_player_data;");
-            while (set.next()) {
-                String uuid = set.getString("uuid");
-                String string = set.getString("data");
-                try {
-                    PlayerData data = new PlayerData(parser.parse(string).getAsJsonObject());
-                    playerData.add(data);
-                } catch (Exception e) {
-                    getLogUtils().error(e, "从数据库中读取玩家 %s 的存档( %s )时出现了一个异常: ", uuid, string);
+            synchronized (playerData) {
+                while (set.next()) {
+                    String uuid = set.getString("uuid");
+                    String string = set.getString("data");
+                    try {
+                        PlayerData data = new PlayerData(parser.parse(string).getAsJsonObject());
+                        playerData.add(data);
+                    } catch (Exception e) {
+                        getLogUtils().error(e, "从数据库中读取玩家 %s 的存档( %s )时出现了一个异常: ", uuid, string);
+                    }
                 }
             }
             set.close();
@@ -232,7 +232,7 @@ public class SQLDataManager implements IDataManager {
                 data = new PlayerData(uuid);
                 getLogUtils().info("初始化玩家 %s 的存档数据.", data.getUuid());
             }
-            synchronized (SQLDataManager.class) {
+            synchronized (playerData) {
                 playerData.remove(data);
                 playerData.add(data);
             }
@@ -270,7 +270,7 @@ public class SQLDataManager implements IDataManager {
 
     @Override
     public PlayerData getPlayerData(UUID uuid) {
-        synchronized (SQLDataManager.class) {
+        synchronized (playerData) {
             for (PlayerData data : playerData) {
                 if (uuid.equals(data.getUuid())) {
                     return data;
@@ -282,7 +282,7 @@ public class SQLDataManager implements IDataManager {
 
     @Override
     public PlayerData getPlayerData(String name) {
-        synchronized (SQLDataManager.class) {
+        synchronized (playerData) {
             for (PlayerData data : playerData) {
                 if (name.equals(data.getPlayerName())) {
                     return data;
@@ -293,8 +293,10 @@ public class SQLDataManager implements IDataManager {
     }
 
     @Override
-    public Set<PlayerData> getPlayerData() {
-        return playerData;
+    public ArrayList<PlayerData> getPlayerData() {
+        synchronized (playerData) {
+            return new ArrayList<>(playerData);
+        }
     }
 
     @Override

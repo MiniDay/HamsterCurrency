@@ -52,7 +52,7 @@ public class VaultTopCommand extends CommandManager {
         page = page - 1;
         String typeId = type.getId();
 
-        ArrayList<PlayerData> playerData = new ArrayList<>(dataManager.getPlayerData());
+        ArrayList<PlayerData> playerData = dataManager.getPlayerData();
         playerData.sort((o1, o2) -> -Double.compare(o1.getPlayerCurrency(typeId), o2.getPlayerCurrency(typeId)));
 
         sender.sendMessage(

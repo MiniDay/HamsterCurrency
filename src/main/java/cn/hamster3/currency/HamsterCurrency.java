@@ -155,4 +155,5 @@ public final class HamsterCurrency extends JavaPlugin {
         logUtils.infoDividingLine();
         logUtils.close();
     }
+
 }

@@ -60,7 +60,7 @@ public class CurrencyTopCommand extends CommandExecutor {
         page = page - 1;
         String typeId = type.getId();
 
-        ArrayList<PlayerData> playerData = new ArrayList<>(dataManager.getPlayerData());
+        ArrayList<PlayerData> playerData = dataManager.getPlayerData();
         playerData.sort((o1, o2) -> -Double.compare(o1.getPlayerCurrency(typeId), o2.getPlayerCurrency(typeId)));
 
         sender.sendMessage(
@@ -87,7 +87,10 @@ public class CurrencyTopCommand extends CommandExecutor {
     @SuppressWarnings("DuplicatedCode")
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         if (args.length == 2) {
-            List<String> types = dataManager.getPlayerData().stream().map(PlayerData::getPlayerName).collect(Collectors.toList());
+            List<String> types = dataManager.getPlayerData()
+                    .stream()
+                    .map(PlayerData::getPlayerName)
+                    .collect(Collectors.toList());
             types = HamsterAPI.startWithIgnoreCase(types, args[1]);
             if (types.size() > 10) {
                 types = types.subList(0, 9);

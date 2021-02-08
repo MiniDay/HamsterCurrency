@@ -1,7 +1,7 @@
 name: HamsterCurrency
 version: ${project.version}
 main: cn.hamster3.currency.HamsterCurrency
-authors: [Hamster3]
+authors: [ Hamster3 ]
 description: 仓鼠的多货币支持
 website: https://www.hamster3.cn/
 
@@ -18,15 +18,15 @@ softdepend:
 
 commands:
   HamsterCurrency:
-    aliases: [hcurrency, currency]
+    aliases: [ hcurrency, currency ]
   balance:
-    aliases: [bal, seemoney]
+    aliases: [ bal, seemoney ]
   balanceTop:
-    aliases: [baltop]
+    aliases: [ baltop ]
   payMoney:
-    aliases: [pay]
+    aliases: [ pay ]
   economy:
-    aliases: [eco, money]
+    aliases: [ eco, money ]
 
 permissions:
   currency.import:
