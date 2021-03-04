@@ -4,7 +4,7 @@ import cn.hamster3.api.HamsterAPI;
 import cn.hamster3.currency.HamsterCurrency;
 import cn.hamster3.currency.data.CurrencyType;
 import cn.hamster3.currency.data.PlayerData;
-import cn.hamster3.service.spigot.api.ServiceMessageAPI;
+import cn.hamster3.service.bukkit.api.ServiceMessageAPI;
 import com.google.gson.JsonParser;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;

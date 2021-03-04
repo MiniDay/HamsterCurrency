@@ -7,7 +7,7 @@ import cn.hamster3.currency.core.IDataManager;
 import cn.hamster3.currency.core.Message;
 import cn.hamster3.currency.data.CurrencyType;
 import cn.hamster3.currency.data.PlayerData;
-import cn.hamster3.service.spigot.api.ServiceMessageAPI;
+import cn.hamster3.service.bukkit.api.ServiceMessageAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;

@@ -4,7 +4,7 @@ import cn.hamster3.currency.core.IDataManager;
 import cn.hamster3.currency.data.CurrencyType;
 import cn.hamster3.currency.data.PlayerData;
 
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.UUID;
 
 @SuppressWarnings("unused")
@@ -58,8 +58,8 @@ public abstract class CurrencyAPI {
         return data.getPlayerCurrency(currencyID) >= amount;
     }
 
-    public HashSet<CurrencyType> getAllCurrencyType() {
-        return new HashSet<>();
+    public ArrayList<CurrencyType> getAllCurrencyType() {
+        return new ArrayList<>(dataManager.getCurrencyTypes());
     }
 
 }

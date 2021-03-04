@@ -3,9 +3,9 @@ package cn.hamster3.currency.listener;
 import cn.hamster3.currency.HamsterCurrency;
 import cn.hamster3.currency.core.FileManager;
 import cn.hamster3.currency.core.SQLDataManager;
+import cn.hamster3.service.bukkit.api.ServiceInfoAPI;
+import cn.hamster3.service.bukkit.event.MessageReceivedEvent;
 import cn.hamster3.service.common.entity.ServiceMessageInfo;
-import cn.hamster3.service.spigot.api.ServiceInfoAPI;
-import cn.hamster3.service.spigot.event.MessageReceivedEvent;
 import org.bukkit.event.EventHandler;
 
 import java.util.UUID;

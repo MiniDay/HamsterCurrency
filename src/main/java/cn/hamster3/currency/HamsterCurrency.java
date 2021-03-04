@@ -16,7 +16,7 @@ import cn.hamster3.currency.hook.PlaceholderHook;
 import cn.hamster3.currency.hook.VaultEconomyHook;
 import cn.hamster3.currency.listener.CurrencyListener;
 import cn.hamster3.currency.listener.SQLListener;
-import cn.hamster3.service.spigot.api.ServiceMessageAPI;
+import cn.hamster3.service.bukkit.api.ServiceMessageAPI;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.command.PluginCommand;
