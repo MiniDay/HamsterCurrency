@@ -284,7 +284,7 @@ public class SQLDataManager implements IDataManager {
     public PlayerData getPlayerData(String name) {
         synchronized (playerData) {
             for (PlayerData data : playerData) {
-                if (name.equals(data.getPlayerName())) {
+                if (name.equalsIgnoreCase(data.getPlayerName())) {
                     return data;
                 }
             }

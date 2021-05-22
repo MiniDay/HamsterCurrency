@@ -6,7 +6,7 @@
 
     <groupId>cn.hamster3</groupId>
     <artifactId>HamsterCurrency</artifactId>
-    <version>2.0.4-SNAPSHOT</version>
+    <version>2.0.5-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>HamsterCurrency</name>
@@ -20,29 +20,6 @@
 
     <build>
         <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.2.0</version>
-                <configuration>
-                    <classifier>javadoc</classifier>
-                    <outputDirectory>${project.basedir}/docs</outputDirectory>
-                    <links>
-                        <link>https://bukkit.windit.net/javadoc/</link>
-                        <link>http://milkbowl.github.io/VaultAPI/</link>
-                        <link>https://ci.dmulloy2.net/job/ProtocolLib/javadoc</link>
-                    </links>
-                    <detectJavaApiLink>true</detectJavaApiLink>
-                </configuration>
-                <executions>
-                    <execution>
-<!--                        <phase>install</phase>-->
-<!--                        <goals>-->
-<!--                            <goal>jar</goal>-->
-<!--                        </goals>-->
-                    </execution>
-                </executions>
-            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
@@ -65,22 +42,6 @@
                     <target>${java.version}</target>
                 </configuration>
             </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <version>3.2.4</version>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                        <configuration>
-                            <createDependencyReducedPom>false</createDependencyReducedPom>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
         </plugins>
         <resources>
             <resource>
@@ -92,15 +53,19 @@
 
     <repositories>
         <repository>
-            <id>hamster3</id>
-            <url>http://maven.hamster3.cn/repository/miniday-repo/</url>
+            <id>hamster3-public</id>
+            <url>http://maven.hamster3.cn/maven-public</url>
+        </repository>
+        <repository>
+            <id>hamster3-repo</id>
+            <url>http://maven.hamster3.cn/hamster-repo</url>
         </repository>
     </repositories>
 
     <distributionManagement>
         <repository>
             <id>hamster-repo</id>
-            <url>http://maven.hamster3.cn/repository/miniday-repo/</url>
+            <url>http://maven.hamster3.cn/hamster-repo</url>
         </repository>
     </distributionManagement>
 
@@ -108,7 +73,7 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.16.4-R0.1-SNAPSHOT</version>
+            <version>1.16.5-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -120,7 +85,7 @@
         <dependency>
             <groupId>cn.hamster3</groupId>
             <artifactId>HamsterService-Bukkit</artifactId>
-            <version>2.5.0-SNAPSHOT</version>
+            <version>2.5.5-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
